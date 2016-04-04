@@ -1,0 +1,5 @@
+.htaccess
+composer.lock
+composer.phar
+config/config.yml
+vendor

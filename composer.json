@@ -1,0 +1,23 @@
+{
+  "name": "vendor_name/package_name",
+  "description": "description_text",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "author's name",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "silex/silex": "2.0.x-dev",
+    "doctrine/dbal": "2.6.x-dev",
+    "symfony/yaml": "3.0.x-dev",
+    "twig/twig": "1.6.5"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "Cinematics\\" : "src/"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="SQL Server (jTds) - @SQL5024.Smarterasp.net" uuid="a0ccfd1b-4d4f-4e42-af0c-5ed04ab6e094">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+</component>
