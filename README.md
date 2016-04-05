@@ -6,5 +6,6 @@ simple Silex-based client/server webapp for our friends.
 git clone https://github.com/421p/Cinematics.git
 cd Cinematics
 composer install
-echo "'connectionString' : 'CSTRING_TO_YOUR_DATABASE'" > config/config.yml
+cp config/config.yml.dist config/config.yml
 ```
+then use your favorite text editor to edit config.yml
