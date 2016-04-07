@@ -14,10 +14,6 @@ use Cinematics\Application;
 
 $app = new Application();
 
-//echo '<pre>';
-//print_r($app['controllers_factory']);
-//echo '</pre>';
-
 $app->run();
 
 
