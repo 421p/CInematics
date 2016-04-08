@@ -3,9 +3,7 @@
 namespace Cinematics\Controllers;
 
 
-use Cinematics\DatabaseProvider;
 use Silex\ControllerCollection;
-use Silex\Route;
 
 class RenderController
 {
@@ -27,11 +25,11 @@ class RenderController
     }
 
     private function initRoutes() {
-        $this->router->get('/', function(){
+        $this->router->get('/', function() {
             return $this->twig->render('main.html.twig');
         });
 
-        $this->router->get('/admin', function(){
+        $this->router->get('/admin', function() {
             return $this->twig->render('admin.main.twig');
         });
     }

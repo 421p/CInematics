@@ -31,7 +31,7 @@ class Application extends SilexApplication
 
     private function init()
     {
-        $this->after(function (Request $request, Response $response) {
+        $this->after(function(Request $request, Response $response) {
             $response->headers->set('Access-Control-Allow-Origin', '*');
             $response->headers->set('Access-Control-Allow-Methods', 'GET, POST');
             $response->headers->set('Access-Control-Allow-Headers', 'accept, content-type');

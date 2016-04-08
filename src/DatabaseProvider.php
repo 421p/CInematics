@@ -105,8 +105,7 @@ class DatabaseProvider
     {
 
         return $name == null ?
-            $this->doctrine->fetchAll('SELECT * FROM halls;') :
-            $this->doctrine->fetchAll('SELECT * FROM halls WHERE id = ?', [$name]);
+            $this->doctrine->fetchAll('SELECT * FROM halls;') : $this->doctrine->fetchAll('SELECT * FROM halls WHERE id = ?', [$name]);
     }
 
     /**
@@ -140,7 +139,7 @@ class DatabaseProvider
 //            $statement->execute([$row['row'], $row['col'], $iterator, $row['type'] == 'Легковик' ? $light : $heavy, 2]);
 //            var_dump($statement->errorInfo());
 //        }
-        array_walk($seats, function (&$current) {
+        array_walk($seats, function(&$current) {
             $current['isFree'] = $current['isFree'] > 0;
         });
         //var_dump($data);
@@ -166,7 +165,7 @@ class DatabaseProvider
         $seances = $this->doctrine->fetchAll("call getSeances(?, ?);", [$from, $to]);
 
 
-        array_walk($results, function (&$current) use ($seances) {
+        array_walk($results, function(&$current) use ($seances) {
 
             $moviesArray = explode(',', $current['Sessions']);
             $current['Sessions'] = [];
