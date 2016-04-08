@@ -20,16 +20,18 @@ class RenderController
     /**
      * @return ControllerCollection
      */
-    public function getRouter() {
+    public function getRouter()
+    {
         return $this->router;
     }
 
-    private function initRoutes() {
-        $this->router->get('/', function() {
+    private function initRoutes()
+    {
+        $this->router->get('/', function () {
             return $this->twig->render('main.html.twig');
         });
 
-        $this->router->get('/admin', function() {
+        $this->router->get('/admin', function () {
             return $this->twig->render('admin.main.twig');
         });
     }
