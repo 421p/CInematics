@@ -1,0 +1,465 @@
+@charset "UTF-8";
+/* Ion.RangeSlider, Flat UI Skin
+// css version 2.0.3
+// © Denis Ineshin, 2014    https://github.com/IonDen
+// ===================================================================================================================*/
+/* =====================================================================================================================
+// Skin details */
+.irs-line-mid,
+.irs-line-left,
+.irs-line-right,
+.irs-bar,
+.irs-bar-edge,
+.irs-slider {
+  background: url(../images/slider.png) repeat-x; }
+
+.irs {
+  height: 40px; }
+
+.irs-with-grid {
+  height: 60px; }
+
+.irs-line {
+  height: 12px;
+  top: 25px; }
+
+.irs-line-left {
+  height: 12px;
+  background-position: 0 -30px; }
+
+.irs-line-mid {
+  height: 12px;
+  background-position: 0 0; }
+
+.irs-line-right {
+  height: 12px;
+  background-position: 100% -30px; }
+
+.irs-bar {
+  height: 12px;
+  top: 25px;
+  background-position: 0 -60px; }
+
+.irs-bar-edge {
+  top: 25px;
+  height: 12px;
+  width: 9px;
+  background-position: 0 -90px; }
+
+.irs-shadow {
+  height: 3px;
+  top: 34px;
+  background: #000;
+  opacity: 0.25; }
+
+.lt-ie9 .irs-shadow {
+  filter: alpha(opacity=25); }
+
+.irs-slider {
+  width: 16px;
+  height: 18px;
+  top: 22px;
+  background-position: 0 -120px; }
+
+.irs-slider.state_hover, .irs-slider:hover {
+  background-position: 0 -150px; }
+
+.irs-min, .irs-max {
+  color: #999;
+  font-size: 10px;
+  line-height: 1.333;
+  text-shadow: none;
+  top: 0;
+  padding: 1px 3px;
+  background: #e1e4e9;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+.irs-from, .irs-to, .irs-single {
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.333;
+  text-shadow: none;
+  padding: 1px 5px;
+  background: #FD4A00;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+.irs-from:after, .irs-to:after, .irs-single:after {
+  position: absolute;
+  display: block;
+  content: "";
+  bottom: -6px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -3px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  border-top-color: #FD4A00; }
+
+.irs-grid-pol {
+  background: #e1e4e9; }
+
+.irs-grid-text {
+  color: #999; }
+
+body {
+  font-size: 16px;
+  background-color: #000000;
+  background-image: url("../images/bgmain.jpg");
+  background-size: cover; }
+  body .bg {
+    background-color: #FCFCFD;
+    color: #000000; }
+  body .bgTitle {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #FFFFFF; }
+
+h2 {
+  padding: 5px;
+  margin: 0;
+  text-transform: uppercase; }
+
+header #headerTop {
+  margin-top: 2rem;
+  padding: 1rem; }
+  header #headerTop #logo {
+    height: 80px; }
+  header #headerTop .navbar-nav {
+    margin-top: 15px;
+    float: right; }
+    @media (max-width: 992px) {
+      header #headerTop .navbar-nav {
+        margin-top: 0;
+        float: left; } }
+
+header #soon .new {
+  overflow: hidden; }
+  header #soon .new .no-padding {
+    padding-left: 15px;
+    padding-right: 15px; }
+    @media (max-width: 768px) {
+      header #soon .new .no-padding {
+        padding-left: 0 !important;
+        padding-right: 0 !important; } }
+
+header #soon .item {
+  display: table;
+  table-layout: fixed;
+  margin-top: 5px; }
+  header #soon .item .image {
+    padding: 0 5px;
+    height: 200px;
+    display: inline-block;
+    overflow: hidden; }
+    header #soon .item .image img {
+      height: 100%; }
+  header #soon .item .calendar {
+    height: 200px;
+    max-width: 195px;
+    display: inline-block;
+    overflow: hidden;
+    position: relative; }
+    header #soon .item .calendar .calendar-group {
+      display: inline-block;
+      width: 100%;
+      position: absolute;
+      bottom: 15px;
+      left: 0; }
+      header #soon .item .calendar .calendar-group .Date-day {
+        font-size: 6rem;
+        line-height: 6rem;
+        font-weight: bold;
+        color: #FD2C00; }
+      header #soon .item .calendar .calendar-group .Date-month {
+        font-size: 2rem;
+        line-height: 2rem;
+        color: #D23C0B; }
+
+main #slider {
+  height: 50rem; }
+  @media (max-width: 1200px) {
+    main #slider {
+      height: 55rem !important; } }
+  main #slider #scrolling {
+    overflow: hidden;
+    height: 35rem; }
+  main #slider ul {
+    transition: all .2s ease-out 0s;
+    margin: 0;
+    padding: 2rem 0;
+    list-style-type: none;
+    position: absolute;
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    min-width: 768px; }
+  main #slider .itemslide-active {
+    transform: scale(1);
+    margin-top: -1rem; }
+  main #slider li {
+    float: left;
+    padding: 2rem 2rem;
+    transform: scale(0.95); }
+    main #slider li .poster {
+      position: relative; }
+      main #slider li .poster img {
+        height: 300px; }
+        @media (max-width: 768px) {
+          main #slider li .poster img {
+            height: 250px !important; } }
+      main #slider li .poster .info {
+        height: 5rem;
+        line-height: 2rem;
+        margin-top: -30rem;
+        font-size: 2rem;
+        position: relative; }
+        @media (max-width: 768px) {
+          main #slider li .poster .info {
+            margin-top: -25rem !important; } }
+        main #slider li .poster .info .inline-block {
+          display: inline-block;
+          width: 45%; }
+        main #slider li .poster .info .title {
+          font-size: 2.8rem;
+          text-transform: uppercase;
+          font-weight: 600;
+          line-height: 2.8rem; }
+          @media (max-width: 768px) {
+            main #slider li .poster .info .title {
+              font-size: 2rem !important;
+              line-height: 2rem !important; } }
+
+main #filter .hall {
+  padding: 2rem 0; }
+  main #filter .hall input[type=radio].css-checkbox {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0; }
+  main #filter .hall input[type=radio].css-checkbox + label.css-label {
+    transition: all .3s ease 0s;
+    padding: 0 1.5rem;
+    height: 4rem;
+    display: inline-block;
+    line-height: 4rem;
+    font-size: 1.6rem;
+    vertical-align: middle;
+    cursor: pointer; }
+  main #filter .hall input[type=radio].css-checkbox:checked + label.css-label {
+    background: #FD4A00;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 2rem; }
+  main #filter .hall label.css-label {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+
+@media (max-width: 768px) {
+  main .width50 {
+    width: 48% !important; } }
+
+@media (max-width: 768px) {
+  main .width100 {
+    width: 100% !important; } }
+
+footer .row {
+  background-color: rgba(0, 0, 0, 0.77);
+  line-height: 7rem;
+  color: #fff;
+  font-size: 1.5rem; }
+
+.details .images {
+  overflow: hidden; }
+
+.details .fancy-image {
+  height: 12rem;
+  margin-left: -3rem;
+  padding: 1rem 0.5rem;
+  object-fit: cover; }
+  @media (max-width: 768px) {
+    .details .fancy-image {
+      margin-left: 0 !important; } }
+
+.details td:nth-child(odd) {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  font-weight: 600; }
+
+.details td:nth-child(even) {
+  font-size: 1.5rem;
+  text-transform: capitalize; }
+
+.details .bi_title {
+  text-align: right;
+  padding-right: 1rem;
+  vertical-align: baseline; }
+
+.details .bi_about {
+  font-weight: 400 !important;
+  padding-top: 2rem !important;
+  font-size: 1.4rem !important; }
+
+.details .bi_trailer {
+  padding-top: 2rem; }
+  @media (max-width: 768px) {
+    .details .bi_trailer .trailer {
+      width: 90% !important;
+      height: 100% !important; } }
+
+.details button {
+  text-transform: uppercase;
+  font-size: 3rem;
+  line-height: 3.4rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  width: 100%;
+  background-color: #FD4A00;
+  border-color: #FD4A00; }
+
+.details .pad-top {
+  padding-top: 1rem; }
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    width: 100% !important; }
+  .navbar-toggle {
+    float: none !important;
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/menu.png");
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #FD411A; }
+  .btnmenu {
+    color: #fff;
+    font-size: 2rem; } }
+
+.buyTickets {
+  width: 80%; }
+  @media (max-width: 768px) {
+    .buyTickets {
+      width: 100%; } }
+
+#tickets .head {
+  height: 200px; }
+  #tickets .head ul {
+    padding: 1rem 0; }
+    #tickets .head ul li {
+      padding-right: 2rem; }
+  #tickets .head .info li:nth-child(even) {
+    font-weight: 600; }
+
+#tickets .height100 {
+  height: 100%; }
+
+#tickets .poster {
+  display: inline-block;
+  height: 100%;
+  float: right; }
+
+#tickets .types li {
+  padding-left: 25px; }
+  #tickets .types li:before {
+    content: '';
+    display: inline-block;
+    height: 60px;
+    width: 31px;
+    background-image: url("../images/cars.png");
+    background-size: cover;
+    margin-bottom: -20px;
+    padding-left: 20px; }
+  #tickets .types li.sold:before {
+    background-position-x: -92px; }
+  #tickets .types li.cheap:before {
+    background-position-x: 0; }
+  #tickets .types li.exp:before {
+    background-position-x: -62px; }
+
+#tickets .parking {
+  padding-top: 1rem;
+  display: inline-block;
+  width: 100%; }
+  #tickets .parking .screen {
+    background-image: url("../images/screen.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100px;
+    margin-bottom: 2rem; }
+  #tickets .parking .cars .car {
+    display: inline-block;
+    height: 50px;
+    width: 26px;
+    background-image: url("../images/cars.png");
+    background-size: cover; }
+    #tickets .parking .cars .car:hover {
+      transform: scale(1.2); }
+  #tickets .parking .cars .sold {
+    background-position-x: -77px; }
+  #tickets .parking .cars .cheap {
+    background-position-x: 0; }
+  #tickets .parking .cars .exp {
+    background-position-x: -51px; }
+  #tickets .parking .cars .selected {
+    transform: scale(1.2);
+    background-position-x: -26px; }
+  #tickets .parking .cars .nohover {
+    pointer-events: none; }
+
+#tickets .order {
+  display: none; }
+
+#tickets .checkout {
+  padding: 10px; }
+  #tickets .checkout .ticket-container {
+    display: inline-block;
+    background: #758181;
+    padding: 5px 5px 0 5px;
+    color: #fff; }
+    #tickets .checkout .ticket-container .ticket {
+      display: inline-block;
+      border: 2px dashed #000;
+      padding: 4px 0; }
+      #tickets .checkout .ticket-container .ticket h6 {
+        margin: 2px; }
+      #tickets .checkout .ticket-container .ticket .name {
+        float: left;
+        text-align: right;
+        padding: 0 2px 0 5px; }
+      #tickets .checkout .ticket-container .ticket .type {
+        float: left;
+        text-align: left;
+        padding: 0 2px; }
+        #tickets .checkout .ticket-container .ticket .type h6 {
+          font-weight: 600; }
+  #tickets .checkout span {
+    display: inline-block;
+    font-size: 10rem;
+    line-height: 10rem; }
+  #tickets .checkout button {
+    text-transform: uppercase;
+    font-size: 3rem;
+    line-height: 3.4rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    width: 100%;
+    background-color: #FD4A00;
+    border-color: #FD4A00; }
+
+form {
+  padding: 2rem; }
+
+/*# sourceMappingURL=main.css.map */

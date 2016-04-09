@@ -1,0 +1,7 @@
+/bower_components
+/node_modules
+/.idea
+/typings/main
+/typings/main.d.ts
+/typings/browser.d.ts
+/typings/browser
