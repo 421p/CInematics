@@ -89,6 +89,9 @@
           transform: scale(1.2);
           background-position-x: -26px;
         }
+        .Big{
+          background-position-x: -102px;
+        }
         .nohover{
           pointer-events:none;
         }
@@ -140,6 +143,11 @@
         width: 100%;
         background-color: #FD4A00;
         border-color: #FD4A00;
+        &:hover {
+          color: #fff;
+          background-color: #c9302c;
+          border-color: #ac2925;
+        }
       }
     }
   }

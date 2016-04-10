@@ -147,6 +147,8 @@ class TicketsWindow{
 
         if($(this).hasClass("selected")){
             $(this).removeClass("selected");
+            if($(this).hasClass("exp"))
+                $(this).removeClass("Big");
             if($parent.TicketsList.length == 1) $parent.TicketsList = [];
             else{
                 for(let i in $parent.TicketsList){
@@ -160,6 +162,9 @@ class TicketsWindow{
         }
         else{
             $(this).addClass("selected");
+            if($(this).hasClass("exp"))
+                $(this).addClass("Big");
+
             $parent.TicketsList.push(ticket);
         }
 

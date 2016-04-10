@@ -1,3 +1,9 @@
+$(document).ajaxStart(function () {
+    $("#loader").show();
+});
+$(document).ajaxStop(function () {
+    $("#loader").hide();
+});
 var MovieObject = (function () {
     function MovieObject(data, template) {
         var MovieData = $.getJSON(data);
@@ -417,6 +423,8 @@ var TicketsWindow = (function () {
         };
         if ($(this).hasClass("selected")) {
             $(this).removeClass("selected");
+            if ($(this).hasClass("exp"))
+                $(this).removeClass("Big");
             if ($parent.TicketsList.length == 1)
                 $parent.TicketsList = [];
             else {
@@ -430,6 +438,8 @@ var TicketsWindow = (function () {
         }
         else {
             $(this).addClass("selected");
+            if ($(this).hasClass("exp"))
+                $(this).addClass("Big");
             $parent.TicketsList.push(ticket);
         }
         $parent.PrintTickets();
