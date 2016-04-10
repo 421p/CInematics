@@ -418,6 +418,9 @@
     width: 10rem;
     height: 10rem;
     margin: 20% auto; }
+    @media (max-width: 768px) {
+      #loader .sk-cube-grid {
+        margin-top: 50%; } }
   #loader .sk-cube-grid .sk-cube {
     width: 33%;
     height: 33%;

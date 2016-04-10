@@ -3,3 +3,4 @@ composer.phar
 config/config.yml
 vendor
 .idea
+www

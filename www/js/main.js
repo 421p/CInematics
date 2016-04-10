@@ -195,7 +195,10 @@ var DetailedInfo = (function () {
                 _this.Slider.find("li").each(function () {
                     width += $(this).outerWidth();
                 });
-                _this.Slider.css("transform", "translate3d(" + ($(window).width() - width - _this.Slider.find(".itemslide-active").outerWidth()) / 2 + "px, 0px, 0px)");
+                _this.Slider.css({
+                    width: width,
+                    transform: "translate3d(" + (($(window).outerWidth() - width - _this.Slider.find(".itemslide-active").outerWidth()) / 2 - 10) + "px, 0px, 0px)"
+                });
             });
             _this.Slider.on("changeActiveIndex", function (e) {
                 var curSel = $(e.target).children().eq(_this.Slider.getActiveIndex());

@@ -123,7 +123,10 @@ class DetailedInfo{
                 this.Slider.find("li").each(function(){
                     width+= $(this).outerWidth();
                 });
-                this.Slider.css("transform", `translate3d(${($(window).width() - width - this.Slider.find(".itemslide-active").outerWidth())/2}px, 0px, 0px)`);
+                this.Slider.css({
+                    width: width,
+                    transform: `translate3d(${($(window).outerWidth() - width - this.Slider.find(".itemslide-active").outerWidth())/2 - 10}px, 0px, 0px)`
+                });
 
             });
 
