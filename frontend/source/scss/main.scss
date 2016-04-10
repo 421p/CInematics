@@ -1,4 +1,9 @@
 @import "ion.rangeSlider";
+@import 'detailedInfo';
+@import 'tickets';
+@import 'soon';
+@import 'itemslide';
+@import 'filters';
 $BackgroundMain: #000000;
 $TextMain: #FFFFFF;
 
@@ -23,6 +28,10 @@ h2{
     margin: 0;
     text-transform: uppercase;
 }
+
+form{
+    padding: 2rem;
+}
 header{
     #headerTop{
         margin-top: 2rem;
@@ -39,164 +48,10 @@ header{
                 }
         }
     }
-    #soon{
-        .new{
-            overflow: hidden;
-            .no-padding{
-                padding-left: 15px;
-                padding-right: 15px;
-                @media (max-width: 768px) { 
-                    padding-left: 0 !important;
-                    padding-right: 0 !important;
-                }
-            }
-        }
-        .item{
-            display: table;
-            table-layout: fixed;
-            margin-top: 5px;
-            .image {
-                padding: 0 5px;
-        		height: 200px;
-        		display: inline-block;
-        		overflow: hidden;
-        		img{
-        		    height: 100%;
-        		}
-            }
-            .calendar{
-                height: 200px;
-                max-width: 195px;
-        		display: inline-block;
-        		overflow: hidden;
-        		position: relative;
-        		.calendar-group{
-                    display: inline-block;
-                    width:100%;
-                    position: absolute;
-                    bottom: 15px;
-                    left: 0;
-        		    .Date-day{
-                        font-size: 6rem;
-                        line-height: 6rem;
-                        font-weight: bold;
-                        color: #FD2C00;
-                    }
-                    .Date-month{
-                        font-size: 2rem;
-                        line-height: 2rem;
-                        color: #D23C0B;
-                    } 
-        		}
-               
-            }
-            
-        }
-    }
+
 }
 
-
 main{
-    #slider{
-        height: 50rem;
-        @media (max-width: 1200px) { 
-                height: 55rem !important;
-        }
-        #scrolling {
-            overflow: hidden;
-            height: 35rem;
-        }
-        
-        ul {
-            transition: all .2s ease-out 0s;
-            margin: 0;
-            padding: 2rem 0;
-            list-style-type: none;
-            position: absolute;
-            height: 100%;
-            -webkit-transform-style: preserve-3d;
-            -ms-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-            min-width: 768px;
-        }
-        .itemslide-active{
-               transform: scale(1); 
-               margin-top: -1rem;
-            }
-        li {
-            float: left;
-            padding: 2rem 2rem;
-            transform: scale(.95);
-            
-            .poster{
-                position: relative;
-               img{
-                   height:300px;
-                   @media (max-width: 768px) { 
-                        height: 250px !important;
-                    } 
-               }
-               .info{
-                    height: 5rem;
-                    line-height: 2rem;
-                    margin-top: -30rem;
-                    font-size: 2rem;
-                    position: relative;
-                    @media (max-width: 768px) { 
-                        margin-top: -25rem !important;
-                    }
-                   .inline-block{
-                       display: inline-block;
-                       width: 45%;
-                   }
-                   .title{
-                        font-size: 2.8rem;
-                        text-transform: uppercase;
-                        font-weight: 600;
-                        line-height: 2.8rem;
-                        @media (max-width: 768px) { 
-                             font-size: 2rem !important;
-                             line-height: 2rem !important;
-                        }
-                   }
-               }
-            }
-        }
-    }
-    #filter{
-        .hall{
-            padding: 2rem 0;
-            input[type=radio].css-checkbox {
-    			position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
-    		}
-    
-    		input[type=radio].css-checkbox + label.css-label {
-		        transition: all .3s ease 0s;
-                padding: 0 1.5rem;
-                height: 4rem;
-                display: inline-block;
-                line-height: 4rem;
-                font-size: 1.6rem;
-                vertical-align: middle;
-                cursor: pointer;
-    		}
-    
-    		input[type=radio].css-checkbox:checked + label.css-label {
-                background: #FD4A00;
-                color: #fff;
-                border-radius: 5px;
-                font-size: 2rem;
-    		}
-    		label.css-label {
-                -webkit-touch-callout: none;
-                -webkit-user-select: none;
-                -khtml-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-                }
-        }
-    }
     .width50{
        @media (max-width: 768px) { 
                 width: 48% !important;
@@ -207,8 +62,6 @@ main{
                 width: 100% !important;
             } 
     }
-    
-    
 }
 
 footer{
@@ -220,63 +73,7 @@ footer{
     }
 }
 
-.details{
-    //transition: all .2s ease-out 0s;
-    .images {
-        overflow: hidden;
-    }
-    .fancy-image{
-        height: 12rem;
-        margin-left: -3rem;
-        padding: 1rem 0.5rem;
-        object-fit: cover;
-        @media (max-width: 768px) { 
-                margin-left: 0 !important;
-            }
-    }
-    td:nth-child(odd){
-        font-size: 1.5rem;
-        text-transform: capitalize;
-        font-weight: 600;
-    }
-    td:nth-child(even){
-        font-size: 1.5rem;
-        text-transform: capitalize;
-    }
-    
-    .bi_title{
-        text-align: right;
-        padding-right: 1rem;
-        vertical-align: baseline;
-    }
-    .bi_about{
-        font-weight: 400 !important;
-        padding-top: 2rem !important;
-        font-size: 1.4rem !important;
-    }
-    .bi_trailer{
-        padding-top: 2rem;
-        .trailer{
-            @media (max-width: 768px) { 
-                width: 90% !important;
-                height: 100% !important;
-            }
-        }
-    }
-    button{
-        text-transform: uppercase;
-        font-size: 3rem;
-        line-height: 3.4rem;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        width: 100%;
-        background-color: #FD4A00;
-        border-color: #FD4A00;
-    }
-    .pad-top{
-        padding-top: 1rem;
-    }
-}
+
 
 @media (max-width: 768px) { 
     .navbar-nav{
@@ -298,151 +95,5 @@ footer{
         font-size: 2rem;
     }
 }
-.buyTickets{
-    width:80%;
-    @media (max-width: 768px) {
-        width:100%;
-    }
-}
-#tickets{
-    .head{
-        height: 200px;
-        ul{
-            padding: 1rem 0;
-            li{
-                padding-right: 2rem;
-            } 
-        }
-        .info{
-            li:nth-child(even){
-                font-weight: 600;
-            }
-        }
-        
-    }
-    .height100{
-        height: 100%;
-    }
-    .poster{
-        display: inline-block;
-        height: 100%;
-        float: right;
-    }
-    .types{
-        li{
-            padding-left: 25px;
-            &:before{
-               content: '';
-                display: inline-block;
-                height: 60px;
-                width: 31px;
-                background-image: url("../images/cars.png");
-                background-size: cover;
-                margin-bottom: -20px;
-                padding-left:20px;
-            }
-            &.sold:before {
-                background-position-x: -92px;
-            }
-            &.cheap:before {
-                background-position-x: 0;
-            }
-            &.exp:before {
-                background-position-x: -62px;
-            }
-        }
-        
-    }
-    .parking{
-        padding-top:1rem;
-        display: inline-block;
-        width: 100%;
-        .screen{
-                background-image: url("../images/screen.png");
-                background-size: contain;
-                background-repeat: no-repeat;
-                height: 100px;
-                margin-bottom: 2rem;
-        }
-        .cars{
-            .car {
-                display: inline-block;
-                height: 50px;
-                width: 26px;
-                background-image: url("../images/cars.png");
-                background-size: cover;
-                &:hover{
-                    transform: scale(1.2)
-                }
-            }
-            .sold {
-                background-position-x: -77px;
-            }
-            .cheap {
-                background-position-x: 0;
-            }
-            .exp {
-                background-position-x: -51px;
-            }
-            .selected{
-                transform: scale(1.2);
-                background-position-x: -26px;
-            }
-            .nohover{
-                pointer-events:none;
-            }
-        }
-    }
-    .order{
-        display:none;
-    }
-    .checkout{
-        padding: 10px;
-           .ticket-container{
-               display: inline-block;
-               background: #758181;
-               padding: 5px 5px 0 5px;
-               color: #fff;
-               .ticket{
-                   display: inline-block;
-                   border: 2px dashed #000;
-                   padding: 4px 0;
-                   h6{
-                       margin: 2px;
-                   }
-                   .name{
-                       float: left;
-                       text-align:right;
-                       padding: 0 2px 0 5px;
-                   }
-                   .type{
-                      float: left; 
-                      text-align:left;
-                      padding: 0 2px;
-                      h6{
-                          font-weight: 600;
-                      }
-                   }
-               }
-           }
-           span{
-               display: inline-block;
-                font-size: 10rem;
-                line-height: 10rem;
-           }
-           button{
-                text-transform: uppercase;
-                font-size: 3rem;
-                line-height: 3.4rem;
-                padding: 1.5rem;
-                margin: 1rem 0;
-                width: 100%;
-                background-color: #FD4A00;
-                border-color: #FD4A00;
-            }
-        }
-}
 
-form{
-    padding: 2rem;
-}
+

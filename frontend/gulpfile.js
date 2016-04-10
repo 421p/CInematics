@@ -75,7 +75,7 @@ gulp.task('cHtml-debug', function () {
 
 //Compile scss witch sourcemaps
 gulp.task('cpm-scss-debug', function () {
-    return gulp.src('**/*.scss', {cwd: dir.src + dir.styles.scss})
+    return gulp.src('main.scss', {cwd: dir.src + dir.styles.scss})
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write(dir.styles.maps))
@@ -115,7 +115,7 @@ gulp.task('compressVendors-release', function () {
 });
 
 gulp.task('cHtml-release', function () {
-    return gulp.src('**/*.html', {cwd: dir.src})
+    return gulp.src('**/*.html.twig', {cwd: dir.src})
         .pipe(useref())
         .pipe(gulp.dest(dir.release));
 });
@@ -130,7 +130,7 @@ gulp.task('cmp-ts-release', function () {
 
 //Compile scss
 gulp.task('cpm-scss-release', function () {
-    return gulp.src('**/*.scss', {cwd: dir.src + dir.styles.scss})
+    return gulp.src('main.scss', {cwd: dir.src + dir.styles.scss})
         .pipe(sass().on('error', sass.logError))
         .pipe(concatCss('app.css'))
         .pipe(autoprefixer({
