@@ -188,7 +188,7 @@ var DetailedInfo = (function () {
             _this.ShowRange(TimeResult.From, TimeResult.To);
             _this.Slider.itemslide({
                 duration: 0,
-                disable_autowidth: true
+                disable_autowidth: false
             });
             $(window).resize(function () {
                 var width = 0;
@@ -383,6 +383,9 @@ var TicketsWindow = (function () {
             _this.HighPrice.text(data.prices[1].price + " \u0433\u0440\u043D.");
             var Park = _this.GeneretePark(data.seats);
             _this.Field.html(Park);
+            _this.Field.find(".dragger").draggable({
+                containment: [-200, -200, 200, 200]
+            });
             _this.Template.modal("show");
         });
     };
@@ -393,7 +396,7 @@ var TicketsWindow = (function () {
     };
     TicketsWindow.prototype.GeneretePark = function (obj) {
         var row = 1;
-        var html = '<div class="col-md-12">';
+        var html = '<div class="dragger"><div class="row"><div class="col-md-12">';
         for (var i in obj) {
             if (obj[i].row != row) {
                 html += '</div><div class="col-md-12">';
@@ -401,7 +404,7 @@ var TicketsWindow = (function () {
             }
             html += this.GenerateSeat(obj[i]);
         }
-        html += '</div>';
+        html += '</div></div></div>';
         return html;
     };
     TicketsWindow.prototype.GenerateSeat = function (obj) {
@@ -462,7 +465,7 @@ var TicketsWindow = (function () {
             total += tiket.price;
             _this.Checkout.append("<span>+</span>");
         });
-        this.Checkout.find("span:last").html('<span>=' + total + ' грн.</span>').after('<div class="col-md-12"><button type="button" class="btn btn-danger">Сделать заказ</button></div>');
+        this.Checkout.find("span:last").html('=' + total + ' грн.').after('<div class="col-md-12"><button type="button" class="btn btn-danger">Сделать заказ</button></div>');
     };
     return TicketsWindow;
 }());

@@ -169,6 +169,18 @@
       padding-right: 2rem; }
   #tiketsModal #tickets .head .info li:nth-child(even) {
     font-weight: 600; }
+  @media (max-width: 768px) {
+    #tiketsModal #tickets .head .info {
+      margin-left: 0;
+      margin-top: -2rem;
+      font-size: 1.4rem; }
+      #tiketsModal #tickets .head .info li {
+        padding: 1rem;
+        float: left; } }
+  @media (max-width: 768px) {
+    #tiketsModal #tickets .head .title {
+      text-align: center;
+      font-size: 2.5rem; } }
 
 #tiketsModal #tickets .height100 {
   height: 100%; }
@@ -195,6 +207,19 @@
     background-position-x: 0; }
   #tiketsModal #tickets .types li.exp:before {
     background-position-x: -62px; }
+
+@media (max-width: 768px) {
+  #tiketsModal #tickets .types {
+    margin-top: -5rem !important; }
+    #tiketsModal #tickets .types li {
+      padding-top: 25px !important; }
+      #tiketsModal #tickets .types li:before {
+        height: 45px !important;
+        width: 24px !important; }
+    #tiketsModal #tickets .types .exp:before {
+      background-position-x: -45px !important; }
+    #tiketsModal #tickets .types .sold:before {
+      background-position-x: -69px !important; } }
 
 #tiketsModal #tickets .parking {
   padding-top: 1rem;
@@ -271,6 +296,10 @@
       color: #fff;
       background-color: #c9302c;
       border-color: #ac2925; }
+    @media (max-width: 640px) {
+      #tiketsModal #tickets .checkout button {
+        font-size: 2rem;
+        line-height: 2.4rem; } }
 
 #soon .new {
   overflow: hidden; }

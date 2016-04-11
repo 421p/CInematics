@@ -83,8 +83,15 @@ class TicketsWindow{
 
             let Park = this.GeneretePark(data.seats);
             this.Field.html(Park);
+
+            //Make Draggable
+            this.Field.find(".dragger").draggable({
+                containment: [-200,-200,200,200]
+            });
             this.Template.modal("show");
             });
+
+
     }
 
     private TicketsReset(){
@@ -95,7 +102,7 @@ class TicketsWindow{
 
     private GeneretePark(obj){
         let row = 1;
-        let html = '<div class="col-md-12">';
+        let html = '<div class="dragger"><div class="row"><div class="col-md-12">';
         for(let i in obj){
             if(obj[i].row != row) {
                 html+= '</div><div class="col-md-12">';
@@ -103,7 +110,7 @@ class TicketsWindow{
             }
             html+=this.GenerateSeat(obj[i]);
         }
-        html+='</div>';
+        html+='</div></div></div>';
         return html;
     }
 
@@ -188,7 +195,7 @@ class TicketsWindow{
             this.Checkout.append("<span>+</span>");
         });
 
-        this.Checkout.find("span:last").html('<span>='+total+' грн.</span>').after('<div class="col-md-12"><button type="button" class="btn btn-danger">Сделать заказ</button></div>');
+        this.Checkout.find("span:last").html('='+total+' грн.').after('<div class="col-md-12"><button type="button" class="btn btn-danger">Сделать заказ</button></div>');
     }
 
 

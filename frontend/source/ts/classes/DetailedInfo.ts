@@ -114,7 +114,7 @@ class DetailedInfo{
             this.ShowRange(TimeResult.From, TimeResult.To);
             this.Slider.itemslide({
                 duration: 0,
-                disable_autowidth: true
+                disable_autowidth: false
             });
 
 
