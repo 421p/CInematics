@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\Table;
 use JsonSerializable;
 
 /**
- * Class Hall
  * @Entity
  * @Table(name="halls")
  */
