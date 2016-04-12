@@ -1,0 +1,54 @@
+#soon{
+  .new{
+    overflow: hidden;
+    .no-padding{
+      padding-left: 15px;
+      padding-right: 15px;
+      @media (max-width: 768px) {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
+  }
+  .item{
+    display: table;
+    table-layout: fixed;
+    margin-top: 5px;
+    .image {
+      padding: 0 5px;
+      height: 200px;
+      display: inline-block;
+      overflow: hidden;
+      img{
+        height: 100%;
+      }
+    }
+    .calendar{
+      height: 200px;
+      max-width: 195px;
+      display: inline-block;
+      overflow: hidden;
+      position: relative;
+      .calendar-group{
+        display: inline-block;
+        width:100%;
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        .Date-day{
+          font-size: 6rem;
+          line-height: 6rem;
+          font-weight: bold;
+          color: #FD2C00;
+        }
+        .Date-month{
+          font-size: 2rem;
+          line-height: 2rem;
+          color: #D23C0B;
+        }
+      }
+
+    }
+
+  }
+}

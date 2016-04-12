@@ -1,0 +1,16 @@
+{
+  "name": "Kinodrom.kiev.ua",
+  "version": false,
+  "dependencies": {},
+  "exclude": [
+    "typings/main.d.ts",
+    "typings/main",
+    "node_modules",
+    "bower_componets"
+  ],
+  "ambientDependencies": {
+    "bootstrap": "registry:dt/bootstrap#3.3.5+20160316155526",
+    "fancybox": "registry:dt/fancybox#2.1.0+20160316155526",
+    "jquery": "registry:dt/jquery#1.10.0+20160316155526"
+  }
+}

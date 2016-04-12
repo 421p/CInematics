@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "AMD",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "target": "ES5",
+    "declaration": false,
+    "noResolve": false,
+    "out": "main.js"
+  },
+  "exclude": [
+    "node_modules",
+    "bower_components",
+    "typings/main",
+    "typings/main.d.ts"
+  ]
+}
