@@ -28,9 +28,9 @@ class AjaxController
 
     private function initRoutes()
     {
-        $this->router->post('/', function() {
+        $this->router->get('/', function() {
             return json_encode([
-                'Api Version' => '0.0.2',
+                'Api Version' => '0.0.3',
                 'Author' => 'Mykola Prokopenko'
             ]);
         });
@@ -50,28 +50,28 @@ class AjaxController
             return new JsonResponse(['what' => $this->model->sellTicket($data)]);
         });
 
-        $this->router->post('/json', function(Request $request) {
+        $this->router->get('/json', function(Request $request) {
             $arr = json_decode(urldecode($request->getQueryString()), true);
             return new JsonResponse($arr);
         });
 
-        $this->router->post('/halls', function() {
+        $this->router->get('/halls', function() {
             return new JsonResponse($this->model->getHallsInfo(), JSON_NUMERIC_CHECK);
         });
 
-        $this->router->post('/halls/{name}', function($name) {
+        $this->router->get('/halls/{name}', function($name) {
             return new JsonResponse($this->model->getHallsInfo($name), JSON_NUMERIC_CHECK);
         });
 
-        $this->router->post('/seances/{id}', function($id) {
+        $this->router->get('/seances/{id}', function($id) {
             return new JsonResponse($this->model->getSeanceInfo($id), JSON_NUMERIC_CHECK);
         });
 
-        $this->router->post('/seances/{from}/{to}', function($from, $to) {
+        $this->router->get('/seances/{from}/{to}', function($from, $to) {
             return new JsonResponse($this->model->getSeancesBetweenDates($from, $to), JSON_NUMERIC_CHECK);
         });
 
-        $this->router->post('/movies', function() {
+        $this->router->get('/movies', function() {
             return new JsonResponse($this->model->getMovies());
         });
     }
