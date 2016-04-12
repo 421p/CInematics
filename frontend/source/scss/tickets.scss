@@ -98,6 +98,16 @@
         margin-bottom: 2rem;
       }
       .cars{
+        min-width: 400px;
+        position: static;
+        .dragger{
+           @media (max-width: 420px) {
+            transform: scale(0.8);
+            margin-top: -7rem;
+            margin-left: -3rem;
+           }
+          
+        }
         .car {
           display: inline-block;
           height: 50px;
@@ -127,6 +137,7 @@
         .nohover{
           pointer-events:none;
         }
+        
       }
     }
     .order{
@@ -191,13 +202,3 @@
   }
 }
 
-//@media (max-width: 768px) {
-//
-//    .exp:before {
-//      background-position-x: -45px;
-//    }
-//    .sold:before {
-//      background-position-x: -69px;
-//    }
-//
-//}

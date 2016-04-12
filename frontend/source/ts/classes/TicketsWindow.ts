@@ -23,6 +23,7 @@ class TicketsWindow{
 
     TicketsList:ITicket[];
     Area:JQuery;
+    Dragger:JQuery;
     private Order:JQuery;
 
     constructor(public template:string){
@@ -49,8 +50,7 @@ class TicketsWindow{
         $t.Hall = T.find(".place");
         $t.LowPrice = T.find(".lightPrice");
         $t.HighPrice = T.find(".heavyPrice");
-
-
+        
 
         $t.Area = T.find("#tickets");
         $t.Order = T.find(".order");
@@ -84,10 +84,8 @@ class TicketsWindow{
             let Park = this.GeneretePark(data.seats);
             this.Field.html(Park);
 
-            //Make Draggable
-            this.Field.find(".dragger").draggable({
-                containment: [-200,-200,200,200]
-            });
+  
+            
             this.Template.modal("show");
             });
 
@@ -95,6 +93,7 @@ class TicketsWindow{
     }
 
     private TicketsReset(){
+        $(window).off("resize");
         this.TicketsList = [];
         this.Order.hide();
         this.Checkout.html("");

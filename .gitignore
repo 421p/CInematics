@@ -3,4 +3,5 @@ composer.phar
 config/config.yml
 vendor
 .idea
-www
+www/*
+*.log
