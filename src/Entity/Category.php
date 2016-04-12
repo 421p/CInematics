@@ -17,7 +17,8 @@ class Category implements JsonSerializable
 {
 
     /** @Id @Column(type="integer")
-     *  @GeneratedValue()*/
+     * @GeneratedValue()
+     */
     private $id;
 
     /** @Column(type="string") */

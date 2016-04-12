@@ -7,6 +7,7 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 use Cinematics\Entity\Hall;
+use Cinematics\Entity\Movie;
 
 class DatabaseProvider
 {
@@ -132,7 +133,11 @@ class DatabaseProvider
      */
     function getMovies() : array
     {
-        return $this->doctrine->fetchAll('call getMovies();');
+        return $this->em->createQueryBuilder()
+            ->select('m')
+            ->from(Movie::class, 'm')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -158,7 +163,7 @@ class DatabaseProvider
 //            $statement->execute([$row['row'], $row['col'], $iterator, $row['type'] == 'Легковик' ? $light : $heavy, 2]);
 //            var_dump($statement->errorInfo());
 //        }
-        array_walk($seats, function(&$current) {
+        array_walk($seats, function (&$current) {
             $current['isFree'] = $current['isFree'] > 0;
         });
         //var_dump($data);
@@ -184,7 +189,7 @@ class DatabaseProvider
         $seances = $this->doctrine->fetchAll("call getSeances(?, ?);", [$from, $to]);
 
 
-        array_walk($results, function(&$current) use ($seances) {
+        array_walk($results, function (&$current) use ($seances) {
 
             $moviesArray = explode(',', $current['Sessions']);
             $current['Sessions'] = [];
