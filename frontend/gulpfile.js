@@ -58,7 +58,7 @@ gulp.task('cpy-dep-release', function () {
 
 
 //Clean Debug Folder
-gulp.task('cls-debug', function (cb) {
+gulp.task('cls-debug', function () {
     return gulp.src(dir.debug)
         .pipe(clean({
             force: true,
