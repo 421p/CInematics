@@ -56,19 +56,19 @@ class AjaxController
         });
 
         $this->router->get('/halls', function() {
-            return new JsonResponse($this->model->getHallsInfo(), JSON_NUMERIC_CHECK);
+            return new JsonResponse($this->model->getHallsInfo());
         });
 
         $this->router->get('/halls/{name}', function($name) {
-            return new JsonResponse($this->model->getHallsInfo($name), JSON_NUMERIC_CHECK);
+            return new JsonResponse($this->model->getHallsInfo($name));
         });
 
         $this->router->get('/seances/{id}', function($id) {
-            return new JsonResponse($this->model->getSeanceInfo($id), JSON_NUMERIC_CHECK);
+            return new JsonResponse($this->model->getSeanceInfo($id));
         });
 
         $this->router->get('/seances/{from}/{to}', function($from, $to) {
-            return new JsonResponse($this->model->getSeancesBetweenDates($from, $to), JSON_NUMERIC_CHECK);
+            return new JsonResponse($this->model->getSeancesBetweenDates($from, $to));
         });
 
         $this->router->get('/movies', function() {
