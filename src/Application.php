@@ -22,9 +22,7 @@ class Application extends SilexApplication
         $this['debug'] = true;
         $this->config = Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
         $this->model = new DatabaseProvider($this->config['connectionString']);
-        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'), [
-            'cache' => '/tmp/twig'
-        ]);
+        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'));
         $this->init();
         $this->initRoutes();
     }
