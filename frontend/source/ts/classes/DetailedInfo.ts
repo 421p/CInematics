@@ -147,6 +147,7 @@ class DetailedInfo{
             this.Hall.find("input").change(() =>{
                 this.FindSessions(TimeResult.From, TimeResult.To);
                 this.ShowRange(TimeResult.From, TimeResult.To);
+                this.Slider.gotoSlide(Math.round(this.Slider.children().length/2));
             });
 
             //FancyBox
@@ -209,6 +210,7 @@ class DetailedInfo{
             this.Slider.html("<li>В данный период нет показов</li>");
             if(!$.isEmptyObject(this.Slider.data()))
                 this.Slider.reload();
+
             return;
         }
 
