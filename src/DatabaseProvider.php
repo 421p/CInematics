@@ -3,18 +3,26 @@
 namespace Cinematics;
 
 use Doctrine;
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
+
+use Cinematics\Entity\Hall;
 
 class DatabaseProvider
 {
 
     private $doctrine;
+    private $em;
 
-    function __construct($connectionString)
+    function __construct($dbParams)
     {
-        $configuration = new Doctrine\DBAL\Configuration();
-        $this->doctrine = Doctrine\DBAL\DriverManager::getConnection([
-            'url' => $connectionString
-        ], $configuration);
+        $config = Setup::createAnnotationMetadataConfiguration([__DIR__ . '/Entity'], true);
+        $this->em = EntityManager::create($dbParams, $config);;
+
+//        $configuration = new Doctrine\DBAL\Configuration();
+//        $this->doctrine = Doctrine\DBAL\DriverManager::getConnection([
+//            'url' => $connectionString
+//        ], $configuration);
     }
 
 
@@ -98,14 +106,25 @@ class DatabaseProvider
 
 
     /**
-     * @param null $name
+     * @param null $id
      * @return array
      */
-    function getHallsInfo($name = null)
+    function getHallsInfo($id = null)
     {
+        return $id != null ?
 
-        return $name == null ?
-            $this->doctrine->fetchAll('SELECT * FROM halls;') : $this->doctrine->fetchAll('SELECT * FROM halls WHERE id = ?', [$name]);
+            $this->em->createQueryBuilder()
+                ->select('h')
+                ->from(Hall::class, 'h')
+                ->where('h.id = ?1')
+                ->setParameter(1, $id)
+                ->getQuery()
+                ->getResult() :
+            $this->em->createQueryBuilder()
+                ->select('h')
+                ->from(Hall::class, 'h')
+                ->getQuery()
+                ->getResult();
     }
 
     /**

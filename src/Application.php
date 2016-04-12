@@ -21,7 +21,7 @@ class Application extends SilexApplication
         parent::__construct();
         $this['debug'] = true;
         $this->config = Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
-        $this->model = new DatabaseProvider($this->config['connectionString']);
+        $this->model = new DatabaseProvider($this->config['doctrine']);
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'));
         $this->init();
         $this->initRoutes();

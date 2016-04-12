@@ -59,8 +59,8 @@ class AjaxController
             return new JsonResponse($this->model->getHallsInfo());
         });
 
-        $this->router->get('/halls/{name}', function($name) {
-            return new JsonResponse($this->model->getHallsInfo($name));
+        $this->router->get('/halls/{id}', function($id) {
+            return new JsonResponse($this->model->getHallsInfo($id));
         });
 
         $this->router->get('/seances/{id}', function($id) {

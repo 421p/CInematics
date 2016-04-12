@@ -11,9 +11,10 @@
   ],
   "require": {
     "silex/silex": "2.0.x-dev",
-    "doctrine/dbal": "2.6.x-dev",
+    "doctrine/dbal": "2.5.x-dev",
     "symfony/yaml": "3.0.x-dev",
-    "twig/twig": "1.6.5"
+    "twig/twig": "1.6.5",
+    "doctrine/orm": "^2.5"
   },
   "autoload" : {
     "psr-4" : {
