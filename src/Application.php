@@ -22,16 +22,14 @@ class Application extends SilexApplication
         $this['debug'] = true;
         $this->config = Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
         $this->model = new DatabaseProvider($this->config['connectionString']);
-        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'), [
-            'cache' => '/tmp/twig'
-        ]);
+        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'));
         $this->init();
         $this->initRoutes();
     }
 
     private function init()
     {
-        $this->after(function(Request $request, Response $response) {
+        $this->after(function (Request $request, Response $response) {
             $response->headers->set('Access-Control-Allow-Origin', '*');
             $response->headers->set('Access-Control-Allow-Methods', 'GET, POST');
             $response->headers->set('Access-Control-Allow-Headers', 'accept, content-type');
