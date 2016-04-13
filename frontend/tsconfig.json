@@ -7,8 +7,7 @@
     "preserveConstEnums": true,
     "target": "ES5",
     "declaration": false,
-    "noResolve": false,
-    "out": "main.js"
+    "noResolve": false
   },
   "exclude": [
     "node_modules",

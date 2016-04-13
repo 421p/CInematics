@@ -11,11 +11,9 @@ var gulp = require('gulp'),
     ts = require('gulp-typescript'),
     clean = require('gulp-clean'),
     sass = require('gulp-sass'),
-    tsProject = ts.createProject('tsconfig.json'),
 
     dir = {
         src: './source/',
-        debug: '../www/',
         release: '../www/',
         styles: {
             css: 'css/',
@@ -40,67 +38,18 @@ var gulp = require('gulp'),
         ]
     };
 
-//********************** Tasks *************************************
+/*******************************************************************
+ ******************* Compile Tasks *********************************
+ *******************************************************************/
 
-gulp.task('cpy-dep-debug', function () {
-    return gulp.src(dir.dependencies, { cwd: dir.src, base: dir.src})
-        .pipe(gulp.dest(dir.debug))
-});
-
-gulp.task('cpy-dep-release', function () {
+//Copy All Dependencies
+gulp.task('cpy-dependencies', function () {
     return gulp.src(dir.dependencies, { cwd: dir.src, base: dir.src})
         .pipe(gulp.dest(dir.release))
 });
 
-/*******************************************************************
- ******************* Build Debug ***********************************
- *******************************************************************/
-
-
-//Clean Debug Folder
-gulp.task('cls-debug', function () {
-    return gulp.src(dir.debug)
-        .pipe(clean({
-            force: true,
-            read: false
-        }));
-});
-
-//Replace blocks of html code with builds
-gulp.task('cHtml-debug', function () {
-    return gulp.src('**/*.html.twig', {cwd: dir.src})
-        .pipe(useref())
-        .pipe(gulp.dest(dir.debug));
-});
-
-//Compile scss witch sourcemaps
-gulp.task('cpm-scss-debug', function () {
-    return gulp.src('main.scss', {cwd: dir.src + dir.styles.scss})
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write(dir.styles.maps))
-        .pipe(gulp.dest(dir.debug + dir.styles.css));
-});
-
-//Compile TypeScript with sourcemaps
-gulp.task('cmp-ts-debug', function () {
-    return gulp.src('**/*.ts', {cwd: dir.src + dir.scripts.ts})
-        .pipe(sourcemaps.init())
-        .pipe(ts(tsProject))
-        .pipe(sourcemaps.write(dir.styles.maps))
-        .pipe(gulp.dest(dir.debug + dir.scripts.js));
-});
-
-
-
-/*******************************************************************
-******************* Build Release **********************************
-********************************************************************/
-
-//******* Tasks ********
-
-//Clean Release Folder
-gulp.task('cls-release', function () {
+//Clean Folder Before Build
+gulp.task('cls', function () {
     return gulp.src(dir.release)
         .pipe(clean({
             force: true,
@@ -108,37 +57,88 @@ gulp.task('cls-release', function () {
         }));
 });
 
-gulp.task('compressVendors-release', function () {
-    return gulp.src('js/vendor/*.js', {cwd: dir.release})
-        .pipe(uglify())
-        .pipe(gulp.dest(dir.release));
-});
-
-gulp.task('cHtml-release', function () {
+//Replace blocks of html code with builds
+gulp.task('CompileHtml', function () {
     return gulp.src('**/*.html.twig', {cwd: dir.src})
         .pipe(useref())
         .pipe(gulp.dest(dir.release));
 });
 
-//Compile TypeScript
-gulp.task('cmp-ts-release', function () {
-    return gulp.src('**/*.ts', {cwd: dir.src + dir.scripts.ts})
+//Compile Client part TypeScript with sourcemaps
+gulp.task('cmp-ts-client', function () {
+    var tsProject = ts.createProject('tsconfig.json', {"out": "client.js"});
+    return gulp.src('client/**/*.ts', {cwd: dir.src + dir.scripts.ts})
+        .pipe(sourcemaps.init())
         .pipe(ts(tsProject))
-        .pipe(uglify())
+        .pipe(sourcemaps.write(dir.styles.maps))
         .pipe(gulp.dest(dir.release + dir.scripts.js));
 });
 
-//Compile scss
-gulp.task('cpm-scss-release', function () {
-    return gulp.src('main.scss', {cwd: dir.src + dir.styles.scss})
+//Compile Admin part TypeScript with sourcemaps
+gulp.task('cmp-ts-admin', function () {
+    var tsProject = ts.createProject('tsconfig.json', {"out": "admin.js"});
+    return gulp.src('admin/**/*.ts', {cwd: dir.src + dir.scripts.ts})
+        .pipe(sourcemaps.init())
+        .pipe(ts(tsProject))
+        .pipe(sourcemaps.write(dir.styles.maps))
+        .pipe(gulp.dest(dir.release + dir.scripts.js));
+});
+
+//Compile scss witch sourcemaps without PostCSS
+gulp.task('cpm-scss-debug', function () {
+    return gulp.src(['client.scss', 'admin.scss'], {cwd: dir.src + dir.styles.scss})
+        .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(concatCss('app.css'))
+        .pipe(sourcemaps.write(dir.styles.maps))
+        .pipe(gulp.dest(dir.release + dir.styles.css));
+});
+
+/*******************************************************************
+******************* Release Tasks **********************************
+********************************************************************/
+
+//Minify all Javascript
+gulp.task('MinifyJS', function () {
+    return gulp.src('**/*.js', {cwd: dir.release})
+        .pipe(uglify())
+        .pipe(gulp.dest(dir.release));
+});
+
+//Clean all maps
+gulp.task('cls-maps', function () {
+    return gulp.src('**/*.map', {cwd: dir.release})
+        .pipe(clean({
+            force: true,
+            read: false
+        }));
+});
+
+//Compile scss with PostCSS
+gulp.task('cpm-scss-release', function () {
+    return gulp.src(['client.scss', 'admin.scss'], {cwd: dir.src + dir.styles.scss})
+        .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
             browsers: ['last 5 versions'],
             cascade: false
         }))
+        .pipe(shorthand())
+        .pipe(cssnano())
+        .pipe(gulp.dest(dir.release + dir.styles.css));
+});
+
+//Delete unused styles and minify
+gulp.task('PostCSS',['uncss-Bootstrap'], function(){
+    return gulp.src('**/*.css', {cwd: dir.release + dir.styles.css})
+    .pipe(shorthand())
+    .pipe(cssnano())
+    .pipe(gulp.dest(dir.release + dir.styles.css));
+});
+
+//Uncss Bootstrap3
+gulp.task('uncss-Bootstrap', function(){
+    return gulp.src('bootstrap.css', {cwd: dir.release + dir.styles.css})
         .pipe(uncss({
-            html: [dir.src + 'index.html', dir.src + dir.html + '**/*'],
+            html: [dir.release + 'views/*.html.twig', dir.release + dir.html + '**/*.tpl'],
             ignore: [/\w\.in/,
                 '.fade',
                 '.collapse',
@@ -159,33 +159,39 @@ gulp.task('cpm-scss-release', function () {
                 '.in',
                 '.modal-backdrop']
         }))
-        .pipe(shorthand())
-        .pipe(cssnano())
         .pipe(gulp.dest(dir.release + dir.styles.css));
 });
+
+//Pre-release compile
+gulp.task('prerelease', ['cls'], function(){
+    gulp.start('cpy-dependencies');
+    gulp.start('CompileHtml');
+    gulp.start('cmp-ts-client');
+    gulp.start('cmp-ts-admin');
+    gulp.start('cpm-scss-release');
+});
+
 
 /*******************************************************************
  ******************* Global Tasks **********************************
  ********************************************************************/
 
-
-
-gulp.task('start', function () {
-    setTimeout(function(){console.log("Watching for chages...")},2000);
+gulp.task('watcher', function () {
     gulp.watch(dir.src + dir.styles.scss + '**/*.scss', ['cpm-scss-debug']);
-    gulp.watch(dir.src + dir.scripts.ts + '**/*.ts', ['cmp-ts-debug']);
+    gulp.watch(dir.src + dir.scripts.ts + '**/*.ts', ['cmp-ts-client', 'cmp-ts-admin']);
 });
 
-gulp.task('debug', ['cls-debug'], function(){
-    gulp.start('cpy-dep-debug');
-    gulp.start('cHtml-debug');
-    gulp.start('cmp-ts-debug');
+gulp.task('debug', ['cls'], function(){
+    gulp.start('cpy-dependencies');
+    gulp.start('CompileHtml');
+    gulp.start('cmp-ts-client');
+    gulp.start('cmp-ts-admin');
     gulp.start('cpm-scss-debug');
 });
-gulp.task('release', ['cls-release'], function(){
-    gulp.start('cpy-dep-release');
-    gulp.start('cHtml-release');
-    gulp.start('cmp-ts-release');
-    gulp.start('cpm-scss-release');
+
+gulp.task('release', ['cpy-dependencies', 'CompileHtml', 'cmp-ts-client', 'cmp-ts-admin', 'cpm-scss-release'], function(){
+    gulp.start('cls-maps');
+    gulp.start('MinifyJS');
+    gulp.start('PostCSS');
 });
 
