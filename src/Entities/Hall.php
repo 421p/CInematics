@@ -1,6 +1,6 @@
 <?php
 
-namespace Cinematics\Entity;
+namespace Cinematics\Entities;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;

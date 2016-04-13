@@ -2,12 +2,13 @@
 
 namespace Cinematics;
 
+use Cinematics\Repositories\MovieRepository;
 use Doctrine;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
-use Cinematics\Entity\Hall;
-use Cinematics\Entity\Movie;
+use Cinematics\Entities\Hall;
+use Cinematics\Entities\Movie;
 
 class DatabaseProvider
 {
@@ -15,15 +16,16 @@ class DatabaseProvider
     private $doctrine;
     private $em;
 
+    /**
+     * @var MovieRepository
+     */
+    private $movieRepository;
+
     function __construct($dbParams)
     {
-        $config = Setup::createAnnotationMetadataConfiguration([__DIR__ . '/Entity'], true);
+        $config = Setup::createAnnotationMetadataConfiguration([__DIR__ . '/Entities'], true);
         $this->em = EntityManager::create($dbParams, $config);;
-
-//        $configuration = new Doctrine\DBAL\Configuration();
-//        $this->doctrine = Doctrine\DBAL\DriverManager::getConnection([
-//            'url' => $connectionString
-//        ], $configuration);
+        $this->movieRepository = $this->em->getRepository(Movie::class);
     }
 
 
@@ -108,19 +110,13 @@ class DatabaseProvider
 
     /**
      * @param null $id
-     * @return array
+     * @return mixed
      */
     function getHallsInfo($id = null)
     {
         return $id != null ?
 
-            $this->em->createQueryBuilder()
-                ->select('h')
-                ->from(Hall::class, 'h')
-                ->where('h.id = ?1')
-                ->setParameter(1, $id)
-                ->getQuery()
-                ->getResult() :
+            $this->em->find(Hall::class, $id) :
             $this->em->createQueryBuilder()
                 ->select('h')
                 ->from(Hall::class, 'h')
@@ -133,11 +129,15 @@ class DatabaseProvider
      */
     function getMovies() : array
     {
-        return $this->em->createQueryBuilder()
-            ->select('m')
-            ->from(Movie::class, 'm')
-            ->getQuery()
-            ->getResult();
+        $movieRep = $this->em->getRepository(Movie::class);
+
+        return $movieRep->getAll();
+
+//        return $this->em->createQueryBuilder()
+//            ->select('m')
+//            ->from(Movie::class, 'm')
+//            ->getQuery()
+//            ->getResult();
     }
 
     /**
@@ -150,19 +150,6 @@ class DatabaseProvider
         $seats = $this->doctrine->fetchAll('call getSeanceInfo(?);', [$id]);
         $prices = $this->doctrine->fetchAll('call getSeancePrices(?);', [$id]);
 
-
-//        $data = json_decode($json, true);
-//
-//        $light = 11;
-//        $heavy = 21;
-//        $iterator = 0;
-//
-//        foreach($data as $row){
-//            $iterator++;
-//            $statement = $this->pdo->prepare("insert into mappedHalls(row, seat, `index`, type, hall_id) values (?,?,?,?,?);");
-//            $statement->execute([$row['row'], $row['col'], $iterator, $row['type'] == 'Легковик' ? $light : $heavy, 2]);
-//            var_dump($statement->errorInfo());
-//        }
         array_walk($seats, function (&$current) {
             $current['isFree'] = $current['isFree'] > 0;
         });

@@ -1,27 +1,30 @@
 <?php
 
-namespace Cinematics\Entity;
+namespace Cinematics\Entities;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/** @Entity
+/** @Entity(repositoryClass="Cinematics\Repositories\MovieRepository")
  * @Table(name="movies")
  */
 class Movie implements \JsonSerializable
 {
 
-    /** @Id @Column(type="integer") */
+    /** @Id @Column(type="integer")
+        @GeneratedValue
+     */
     private $id;
 
     /** @Column(type="string") */
     private $name;
 
-    /** @OneToOne(targetEntity="Category")
+    /**
+     * @ManyToOne(targetEntity="Category")
      * @JoinColumn(name="cat_id", referencedColumnName="id")
      */
     private $category;
