@@ -7,14 +7,15 @@ body{
   background-color: $BackgroundMain;
   background-image: url('../images/bgmain.jpg');
   background-size: cover;
-  .bg{
-    background-color: #FCFCFD;
-    color: $BackgroundMain;
-  }
-  .bgTitle{
-    background-color: transparentize(darken($TextMain, 100%), .4);
-    color: $TextMain;
-  }
+}
+
+.bg{
+  background-color: #FCFCFD;
+  color: $BackgroundMain;
+}
+.bgTitle{
+  background-color: transparentize(darken($TextMain, 100%), .4);
+  color: $TextMain;
 }
 
 h2{

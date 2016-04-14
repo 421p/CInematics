@@ -176,11 +176,6 @@ gulp.task('prerelease', ['cls'], function(){
  ******************* Global Tasks **********************************
  ********************************************************************/
 
-gulp.task('watcher', function () {
-    gulp.watch(dir.src + dir.styles.scss + '**/*.scss', ['cpm-scss-debug']);
-    gulp.watch(dir.src + dir.scripts.ts + '**/*.ts', ['cmp-ts-client', 'cmp-ts-admin']);
-});
-
 gulp.task('debug', ['cls'], function(){
     gulp.start('cpy-dependencies');
     gulp.start('CompileHtml');

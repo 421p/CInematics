@@ -1,0 +1,230 @@
+$FormColor: #FF072C;
+$accent: #FF072C;
+$white: #ffffff;
+
+
+
+
+
+@mixin Shadow(){
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+#login{
+  height: 100vh;
+  position: relative;
+
+  #signIn{
+    margin-top: 20vh;
+    /* Container */
+    .container {
+      position: relative;
+      width: 100%;
+      &.active {
+        .card {
+          &:first-child {
+            background: darken($white, 5%);
+            margin: 0 15px;
+          }
+
+          &:nth-child(2) {
+            background: darken($white, 2%);
+            margin: 0 10px;
+          }
+        }
+      }
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      background: $white;
+      border-radius: 5px;
+      padding: 60px 0 40px 0;
+      box-sizing: border-box;
+      @include Shadow();
+      transition: .3s ease;
+
+      &:first-child {
+        background: darken($accent, 10%);
+        height: 10px;
+        border-radius: 5px 5px 0 0;
+        margin: 0 10px;
+        padding: 0;
+      }
+
+      /* Title */
+      .title {
+        position: relative;
+        z-index: 1;
+        border-left: 5px solid $accent;
+        margin: 0 0 35px;
+        padding: 2rem 0;
+        color: $accent;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      /* Inputs */
+      .input-container {
+        position: relative;
+        margin: 0 60px 50px;
+
+        input {
+          outline: none;
+          z-index: 1;
+          position: relative;
+          background: none;
+          width: 100%;
+          height: 60px;
+          border: 0;
+          color: #212121;
+          font-size: 24px;
+          font-weight: 400;
+
+          &:focus {
+            ~ label {
+              color: #9d9d9d;
+              transform: translate(-12%, -50%) scale(0.75);
+            }
+
+            ~ .bar {
+              &:before,
+              &:after {
+                width: 50%;
+              }
+            }
+          }
+
+          &:valid {
+            ~ label {
+              color: #9d9d9d;
+              transform: translate(-12%, -50%) scale(0.75);
+            }
+          }
+        }
+
+        label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: #757575;
+          font-size: 24px;
+          font-weight: 300;
+          line-height: 60px;
+          transition: .2s ease;
+        }
+
+        .bar {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          background: #757575;
+          width: 100%;
+          height: 1px;
+
+          &:before,
+          &:after {
+            content: '';
+            position: absolute;
+            background: $accent;
+            width: 0;
+            height: 2px;
+            transition: .2s ease;
+          }
+
+          &:before {
+            left: 50%;
+          }
+
+          &:after {
+            right: 50%;
+          }
+        }
+      }
+      /* Button */
+      .button-container {
+        margin: 0 60px;
+        text-align: center;
+
+        button {
+          outline: 0;
+          cursor: pointer;
+          position: relative;
+          display: inline-block;
+          background: 0;
+          width: 240px;
+          border: 2px solid #e3e3e3;
+          padding: 20px 0;
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 1;
+          text-transform: uppercase;
+          overflow: hidden;
+          transition: .3s ease;
+
+          span {
+            position: relative;
+            z-index: 1;
+            color: #ddd;
+            transition: .3s ease;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: block;
+            background: $accent;
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            margin: -15px 0 0 -15px;
+            opacity: 0;
+            transition: .3s ease;
+          }
+
+          &:hover,
+          &:active,
+          &:focus {
+            border-color: $accent;
+
+            span {
+              color: $accent;
+            }
+          }
+
+          &:active,
+          &:focus {
+            span {
+              color: $white;
+            }
+
+            &:before {
+              opacity: 1;
+              transform: scale(10);
+            }
+          }
+        }
+      }
+    }
+
+
+
+    /* Keyframes */
+    @-webkit-keyframes buttonFadeInUp {
+      0% {
+        bottom: 30px;
+        opacity: 0;
+      }
+    }
+    @keyframes buttonFadeInUp {
+      0% {
+        bottom: 30px;
+        opacity: 0;
+      }
+    }
+
+  }
+}

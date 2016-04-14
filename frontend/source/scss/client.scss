@@ -1,11 +1,10 @@
-@import "ion.rangeSlider";
-@import 'detailedInfo';
-@import 'tickets';
-@import 'soon';
-@import 'itemslide';
-@import 'filters';
+@import 'client/detailedInfo';
+@import 'client/tickets';
+@import 'client/soon';
+@import 'client/itemslide';
+@import 'client/filters';
+@import "client/style";
 @import "loader";
-@import "style";
-
+@import "ion.rangeSlider";
 
 

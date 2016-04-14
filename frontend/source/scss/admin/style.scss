@@ -1,0 +1,10 @@
+$BackgroundMain: #000000;
+$TextMain: #FFFFFF;
+
+
+body{
+  font-size: 16px;
+  background-color: $BackgroundMain;
+  background-image: url('../images/bgmain.jpg');
+  background-size: cover;
+}
