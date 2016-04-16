@@ -1,6 +1,6 @@
 <?php
 
-namespace Cinematics\Entity;
+namespace Cinematics\Entities;
 
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
@@ -31,7 +31,7 @@ class Seance
      */
     private $hall;
 
-    /** @ManyToMany(targetEntity="Movie")
+    /** @ManyToOne(targetEntity="Movie")
      * @JoinColumn(name="movie_id", referencedColumnName="id")
      */
     private $movie;
@@ -50,7 +50,7 @@ class Seance
     /**
      * @return mixed
      */
-    public function getDate()
+    public function getDate() : \DateTime
     {
         return $this->date;
     }
@@ -66,7 +66,7 @@ class Seance
     /**
      * @return mixed
      */
-    public function getMovie()
+    public function getMovie() : Movie
     {
         return $this->movie;
     }
@@ -98,7 +98,7 @@ class Seance
     /**
      * @return mixed
      */
-    public function getHall()
+    public function getHall() : Hall
     {
         return $this->hall;
     }

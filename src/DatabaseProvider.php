@@ -2,13 +2,13 @@
 
 namespace Cinematics;
 
-use Cinematics\Repositories\MovieRepository;
-use Doctrine;
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
-
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
+use Cinematics\Entities\Seance;
+use Cinematics\Repositories\MovieRepository;
+use Doctrine;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Setup;
 
 class DatabaseProvider
 {
@@ -170,33 +170,61 @@ class DatabaseProvider
      */
     function getSeancesBetweenDates(string $from, string $to) : array
     {
+        $queryResults = $this->em->createQueryBuilder()
+            ->select('s')
+            ->from(Seance::class, 's')
+            ->where('s.date between ?0 and ?1')
+            ->setParameters([$from, $to])
+            ->getQuery()->getResult();
 
-        $results = $this->doctrine->fetchAll("call getSeancesExtended(?, ?);", [$from, $to]);
+        return from($queryResults)
+            ->select(function(Seance $s) : Movie {
+                return $s->getMovie();
+            })
+            ->distinct(function(Movie $m){
+                return $m->getId();
+            })->select(function(Movie $movie)use($queryResults) {
 
-        $seances = $this->doctrine->fetchAll("call getSeances(?, ?);", [$from, $to]);
+                return array_merge($movie->jsonSerialize(),['Sessions' =>
+                    from($queryResults)->where(function (Seance $s) use ($movie) {
+                        return $s->getMovie()->getId() === $movie->getId();
+                    })
+                        ->select(function (Seance $s) {
+                            return [
+                                'SeanceID' => $s->getId(),
+                                'Hall' => $s->getHall()->getId(),
+                                'Session' => $s->getDate()->format('Y-m-d H:i'),
+                                'Price' => round($s->getPrice(), 2)
+                            ];
+                        })->toList()]);
+                })->toArray();
 
-
-        array_walk($results, function (&$current) use ($seances) {
-
-            $moviesArray = explode(',', $current['Sessions']);
-            $current['Sessions'] = [];
-
-            foreach ($moviesArray as $movieID) {
-                foreach ($seances as $seance) {
-                    if ($seance['id'] == $movieID) {
-                        $current['Sessions'][] = [
-                            'SeanceID' => $seance['id'],
-                            'Hall' => $seance['hall'],
-                            'Session' => $seance['date'],
-                            'Price' => round($seance['price'], 2)
-                        ];
-                    }
-                }
-            }
-        });
-
-
-        return $results;
+//        $results = $this->doctrine->fetchAll("call getSeancesExtended(?, ?);", [$from, $to]);
+//
+//        $seances = $this->doctrine->fetchAll("call getSeances(?, ?);", [$from, $to]);
+//
+//
+//        array_walk($results, function (&$current) use ($seances) {
+//
+//            $moviesArray = explode(',', $current['Sessions']);
+//            $current['Sessions'] = [];
+//
+//            foreach ($moviesArray as $movieID) {
+//                foreach ($seances as $seance) {
+//                    if ($seance['id'] == $movieID) {
+//                        $current['Sessions'][] = [
+//                            'SeanceID' => $seance['id'],
+//                            'Hall' => $seance['hall'],
+//                            'Session' => $seance['date'],
+//                            'Price' => round($seance['price'], 2)
+//                        ];
+//                    }
+//                }
+//            }
+//        });
+//
+//
+//        return $results;
     }
 
 }

@@ -14,7 +14,8 @@
     "doctrine/dbal": "2.5.x-dev",
     "symfony/yaml": "3.0.x-dev",
     "twig/twig": "1.6.5",
-    "doctrine/orm": "^2.5"
+    "doctrine/orm": "^2.5",
+    "athari/yalinqo": "^2.4"
   },
   "autoload" : {
     "psr-4" : {
