@@ -80,7 +80,7 @@ class AjaxController
                 throw new \Exception("Can't parse string to date");
             }
 
-            return new JsonResponse($this->model->getSeancesBetweenDates(new DateTime($dateFrom), new DateTime($dateTo)));
+            return new JsonResponse($this->model->getSeancesBetweenDates($dateFrom, $dateTo));
         });
 
         $this->router->get('/movies', function() {

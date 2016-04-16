@@ -136,15 +136,7 @@ class DatabaseProvider
      */
     function getMovies() : array
     {
-        $movieRep = $this->em->getRepository(Movie::class);
-
-        return $movieRep->getAll();
-
-//        return $this->em->createQueryBuilder()
-//            ->select('m')
-//            ->from(Movie::class, 'm')
-//            ->getQuery()
-//            ->getResult();
+        return $this->em->getRepository(Movie::class)->getAll();
     }
 
     /**
@@ -160,19 +152,6 @@ class DatabaseProvider
             'prices' => $this->seanceRepository->getSeancePrices($seance),
             'seats' => $this->seanceRepository->getSeanceInfo($seance)
         ];
-
-//        $seats = $this->doctrine->fetchAll('call getSeanceInfo(?);', [$id]);
-//        $prices = $this->doctrine->fetchAll('call getSeancePrices(?);', [$id]);
-//
-//        array_walk($seats, function (&$current) {
-//            $current['isFree'] = $current['isFree'] > 0;
-//        });
-//        //var_dump($data);
-//
-//        return [
-//            'prices' => $prices,
-//            'seats' => $seats
-//        ];
 
     }
 

@@ -29,22 +29,30 @@ class SeanceRepository extends EntityRepository
             ->select('seat')
             ->from(Seat::class, 'seat')
             ->innerJoin(Seance::class, 'seance')
-            ->where('seance = ?0')
-            ->setParameters([$seance])
+            ->where('seance.id = ?0')
+            ->andWhere('seance.hall = seat.hall')
+            ->setParameters([$seance->getId()])
             ->getQuery()->getResult();
 
-        return from($seats)->select(function (Seat $seat) use ($seance) {
+        $ticketsInfo = from(
+            $this->_em->createQueryBuilder()
+            ->select('t')
+            ->from(Ticket::class, 't')
+            ->innerJoin(Seance::class, 's')
+            ->where('s.id = ?0')
+            ->setParameters([$seance->getId()])
+            ->getQuery()->getArrayResult()
+        )->select(function($current){
+            return $current['id'];
+        })->toList();
+
+        return from($seats)->select(function (Seat $seat) use ($seance, $ticketsInfo) {
             return [
                 'row' => $seat->getRow(),
                 'seat' => $seat->getSeat(),
                 'index' => $seat->getIndex(),
                 'type' => $seat->getType()->getName(),
-                'isFree' => intval($this->_em->createQueryBuilder()->select('count(t)')
-                    ->from(Ticket::class, 't')
-                    ->where('t.seance = ?0')
-                    ->andWhere('t.seat = ?1')
-                    ->setParameters([$seance, $seat])
-                    ->getQuery()->getResult()[0][1]) === 0 ? true : false
+                'isFree' => !in_array($seat->getSeat(), $ticketsInfo)
             ];
         })->toList();
     }
