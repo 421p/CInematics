@@ -5,7 +5,6 @@ namespace Cinematics\Repositories;
 use Doctrine\ORM\EntityRepository;
 use Cinematics\Entities\Movie;
 
-
 class MovieRepository extends EntityRepository
 {
     public function getAll() {
