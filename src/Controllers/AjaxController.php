@@ -3,6 +3,7 @@
 namespace Cinematics\Controllers;
 
 use Cinematics\DatabaseProvider;
+use DateTime;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,7 +69,18 @@ class AjaxController
         });
 
         $this->router->get('/seances/{from}/{to}', function($from, $to) {
-            return new JsonResponse($this->model->getSeancesBetweenDates($from, $to));
+
+            $dateFrom = null;
+            $dateTo = null;
+
+            try {
+                $dateFrom = new DateTime($from);
+                $dateTo = new DateTime($to);
+            } catch (\Exception $e) {
+                throw new \Exception("Can't parse string to date");
+            }
+
+            return new JsonResponse($this->model->getSeancesBetweenDates(new DateTime($dateFrom), new DateTime($dateTo)));
         });
 
         $this->router->get('/movies', function() {

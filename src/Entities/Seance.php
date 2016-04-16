@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/** @Entity
+/** @Entity(repositoryClass="Cinematics\Repositories\SeanceRepository")
  * @Table(name="seances")
  */
 class Seance
@@ -110,4 +110,5 @@ class Seance
     {
         $this->hall = $hall;
     }
+
 }

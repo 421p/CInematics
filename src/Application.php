@@ -34,6 +34,10 @@ class Application extends SilexApplication
             $response->headers->set('Access-Control-Allow-Methods', 'GET, POST');
             $response->headers->set('Access-Control-Allow-Headers', 'accept, content-type');
         });
+
+//        $this->error(function (\Exception $e, $code){
+//            return new JsonResponse(['what' => $e->getMessage()]);
+//        });
     }
 
     private function initRoutes()

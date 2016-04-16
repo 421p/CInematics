@@ -5,7 +5,10 @@ namespace Cinematics;
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
 use Cinematics\Entities\Seance;
+use Cinematics\Entities\SeatType;
 use Cinematics\Repositories\MovieRepository;
+use Cinematics\Repositories\SeanceRepository;
+use DateTime;
 use Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
@@ -21,11 +24,15 @@ class DatabaseProvider
      */
     private $movieRepository;
 
+    /** @var  SeanceRepository */
+    private $seanceRepository;
+
     function __construct($dbParams)
     {
         $config = Setup::createAnnotationMetadataConfiguration([__DIR__ . '/Entities'], true);
         $this->em = EntityManager::create($dbParams, $config);;
         $this->movieRepository = $this->em->getRepository(Movie::class);
+        $this->seanceRepository = $this->em->getRepository(Seance::class);
     }
 
 
@@ -146,29 +153,31 @@ class DatabaseProvider
      */
     function getSeanceInfo($id) : array
     {
-
-        $seats = $this->doctrine->fetchAll('call getSeanceInfo(?);', [$id]);
-        $prices = $this->doctrine->fetchAll('call getSeancePrices(?);', [$id]);
-
-        array_walk($seats, function (&$current) {
-            $current['isFree'] = $current['isFree'] > 0;
-        });
-        //var_dump($data);
+        /** @var Seance $seance */
+        $seance = $this->em->find(Seance::class, intval($id));
 
         return [
-            'prices' => $prices,
-            'seats' => $seats
+            'prices' => $this->seanceRepository->getSeancePrices($seance),
+            'seats' => $this->seanceRepository->getSeanceInfo($seance)
         ];
+
+//        $seats = $this->doctrine->fetchAll('call getSeanceInfo(?);', [$id]);
+//        $prices = $this->doctrine->fetchAll('call getSeancePrices(?);', [$id]);
+//
+//        array_walk($seats, function (&$current) {
+//            $current['isFree'] = $current['isFree'] > 0;
+//        });
+//        //var_dump($data);
+//
+//        return [
+//            'prices' => $prices,
+//            'seats' => $seats
+//        ];
 
     }
 
 
-    /**
-     * @param $from string
-     * @param $to string
-     * @return array of seances
-     */
-    function getSeancesBetweenDates(string $from, string $to) : array
+    function getSeancesBetweenDates(DateTime $from, DateTime $to) : array
     {
         $queryResults = $this->em->createQueryBuilder()
             ->select('s')
@@ -178,26 +187,28 @@ class DatabaseProvider
             ->getQuery()->getResult();
 
         return from($queryResults)
-            ->select(function(Seance $s) : Movie {
+            ->select(function (Seance $s) : Movie {
                 return $s->getMovie();
             })
-            ->distinct(function(Movie $m){
+            ->distinct(function (Movie $m) {
                 return $m->getId();
-            })->select(function(Movie $movie)use($queryResults) {
+            })->select(function (Movie $movie) use ($queryResults) {
 
-                return array_merge($movie->jsonSerialize(),['Sessions' =>
-                    from($queryResults)->where(function (Seance $s) use ($movie) {
-                        return $s->getMovie()->getId() === $movie->getId();
-                    })
-                        ->select(function (Seance $s) {
-                            return [
-                                'SeanceID' => $s->getId(),
-                                'Hall' => $s->getHall()->getId(),
-                                'Session' => $s->getDate()->format('Y-m-d H:i'),
-                                'Price' => round($s->getPrice(), 2)
-                            ];
-                        })->toList()]);
-                })->toArray();
+                return array_merge($movie->jsonSerialize(), [
+                    'Sessions' =>
+                        from($queryResults)->where(function (Seance $s) use ($movie) {
+                            return $s->getMovie()->getId() === $movie->getId();
+                        })
+                            ->select(function (Seance $s) {
+                                return [
+                                    'SeanceID' => $s->getId(),
+                                    'Hall' => $s->getHall()->getId(),
+                                    'Session' => $s->getDate()->format('Y-m-d H:i'),
+                                    'Price' => round($s->getPrice(), 2)
+                                ];
+                            })->toList()
+                ]);
+            })->toArray();
     }
 
 }

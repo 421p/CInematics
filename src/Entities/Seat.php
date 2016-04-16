@@ -35,6 +35,11 @@ class Seat
      */
     private $hall;
 
+    /** @ManyToOne(targetEntity="SeatType")
+     * @JoinColumn(name="type", referencedColumnName="id")
+     */
+    private $type;
+
     /**
      * @return mixed
      */
@@ -105,6 +110,22 @@ class Seat
     public function setRow($row)
     {
         $this->row = $row;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType() : SeatType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
 

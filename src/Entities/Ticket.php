@@ -2,7 +2,6 @@
 
 namespace Cinematics\Entities;
 
-use Cinematics\Entity\Seance;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
@@ -22,12 +21,12 @@ class Ticket
      */
     private $id;
 
-    /** @ManyToOne(targetEntity="seances")
+    /** @ManyToOne(targetEntity="Seance")
      * @JoinColumn(name="seans_id", referencedColumnName="id")
      */
     private $seance;
 
-    /** @OneToOne(targetEntity="mappedhalls")
+    /** @OneToOne(targetEntity="Seat")
      * @JoinColumn(name="seat", referencedColumnName="index")
      */
     private $seat;
