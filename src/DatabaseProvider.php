@@ -198,33 +198,6 @@ class DatabaseProvider
                             ];
                         })->toList()]);
                 })->toArray();
-
-//        $results = $this->doctrine->fetchAll("call getSeancesExtended(?, ?);", [$from, $to]);
-//
-//        $seances = $this->doctrine->fetchAll("call getSeances(?, ?);", [$from, $to]);
-//
-//
-//        array_walk($results, function (&$current) use ($seances) {
-//
-//            $moviesArray = explode(',', $current['Sessions']);
-//            $current['Sessions'] = [];
-//
-//            foreach ($moviesArray as $movieID) {
-//                foreach ($seances as $seance) {
-//                    if ($seance['id'] == $movieID) {
-//                        $current['Sessions'][] = [
-//                            'SeanceID' => $seance['id'],
-//                            'Hall' => $seance['hall'],
-//                            'Session' => $seance['date'],
-//                            'Price' => round($seance['price'], 2)
-//                        ];
-//                    }
-//                }
-//            }
-//        });
-//
-//
-//        return $results;
     }
 
 }
