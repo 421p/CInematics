@@ -10,7 +10,9 @@
   ],
   "ambientDependencies": {
     "bootstrap": "registry:dt/bootstrap#3.3.5+20160316155526",
-    "fancybox": "registry:dt/fancybox#2.1.0+20160316155526",
+    "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
+    "fancybox": "registry:dt/fancybox#2.1.0+20160417135120",
+    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
     "jquery": "registry:dt/jquery#1.10.0+20160316155526"
   }
 }

@@ -76,7 +76,7 @@ gulp.task('cmp-ts-client', function () {
 
 //Compile Admin part TypeScript with sourcemaps
 gulp.task('cmp-ts-admin', function () {
-    var tsProject = ts.createProject('tsconfig.json', {"out": "admin.js"});
+    var tsProject = ts.createProject('tsconfig.json');
     return gulp.src('admin/**/*.ts', {cwd: dir.src + dir.scripts.ts})
         .pipe(sourcemaps.init())
         .pipe(ts(tsProject))

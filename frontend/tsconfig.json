@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "module": "AMD",
+    "module": "system",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "noImplicitAny": false,
     "removeComments": true,
     "preserveConstEnums": true,
