@@ -20,6 +20,7 @@ $white: #ffffff;
     .container {
       position: relative;
       width: 100%;
+      min-width: 390px;
       &.active {
         .card {
           &:first-child {
