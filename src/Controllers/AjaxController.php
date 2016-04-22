@@ -37,12 +37,22 @@ class AjaxController
         });
 
         $this->router->post('/add/movie', function(Request $request) {
-            $data = json_decode(urldecode($request->getQueryString()), true);
+
+            $apiK = $request->headers->get('Cinematics-Api-Key');;
+            $data = $request->request->all();
+            $data['apiK'] = $apiK;
+
+            return new JsonResponse($data);
             return new JsonResponse(['what' => $this->model->addMovie($data)]);
         });
 
         $this->router->post('/add/seance', function(Request $request) {
-            $data = json_decode(urldecode($request->getQueryString()), true);
+
+            $apiK = $request->headers->get('Cinematics-Api-Key');;
+            $data = $request->request->all();
+            $data['apiK'] = $apiK;
+
+            return new JsonResponse($data);
             return new JsonResponse(['what' => $this->model->addSeance($data)]);
         });
 

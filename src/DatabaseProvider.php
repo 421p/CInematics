@@ -190,4 +190,8 @@ class DatabaseProvider
             })->toArray();
     }
 
+    public function getEntityManager() {
+        return $this->em;
+    }
+
 }

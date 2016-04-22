@@ -30,10 +30,6 @@ class RenderController
         $this->router->get('/', function () {
             return $this->twig->render('main.html.twig');
         });
-
-        $this->router->get('/admin', function () {
-            return $this->twig->render('admin.html.twig');
-        });
     }
 
 }
