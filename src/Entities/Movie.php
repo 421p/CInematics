@@ -16,7 +16,7 @@ class Movie implements \JsonSerializable
 {
 
     /** @Id @Column(type="integer")
-        @GeneratedValue
+     * @GeneratedValue
      */
     private $id;
 
@@ -55,6 +55,33 @@ class Movie implements \JsonSerializable
 
     /** @Column(type="string") */
     private $actors;
+
+
+    public function __construct(
+        Category $category,
+        $title,
+        $year,
+        $country,
+        $genre,
+        $budget,
+        $time,
+        $language,
+        $actors,
+        $about,
+        $video
+    ) {
+        $this->category = $category;
+        $this->name = $title;
+        $this->year = $year;
+        $this->time = $time;
+        $this->budget = $budget;
+        $this->language = $language;
+        $this->country = $country;
+        $this->description = $about;
+        $this->genres = $genre;
+        $this->actors = $actors;
+        $this->youtubeLink = $video;
+    }
 
     /**
      * @return mixed

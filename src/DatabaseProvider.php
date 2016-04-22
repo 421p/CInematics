@@ -2,6 +2,7 @@
 
 namespace Cinematics;
 
+use Cinematics\Entities\Category;
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
 use Cinematics\Entities\Seance;
@@ -69,9 +70,15 @@ class DatabaseProvider
         if (null === $movie = $this->em->find(Movie::class, $data['Movie'])) {
             throw new \Exception('no such movie');
         }
+        
+        if (null === $price = $data['Price']) {
+            throw new \Exception('Parameter price does not set.');
+        }
 
-        $price = $data['Price'];
-        $date = new DateTime($data['Date']);
+
+        if (null === $date = new DateTime($data['Date'])) {
+            throw new \Exception('no date set');
+        }
 
         $seance = new Seance($movie, $hall, $price, $date);
 
@@ -82,34 +89,70 @@ class DatabaseProvider
 
     }
 
-    /**
-     * @param $movie array
-     * @return string result
-     */
-    function addMovie(array $movie) : string
+    public function addMovie(array $data) : string
     {
 
-        try {
-            $this->doctrine->executeUpdate("
+        /** @var Category $category */
+        $category = current(
+            $this->em->createQueryBuilder()
+                ->select('c')
+                ->from(Category::class, 'c')
+                ->where('c.name = ?0')
+                ->setParameters([$data['Category']])
+                ->getQuery()->getResult()
+        );
 
-            call addMovie(?,?,?,?,?,?,?,?,?,?,?);
+        if (null === $title = $data['Title']) {
+            throw new \Exception('Parameter title does not set.');
+        };
+        if (null === $about = $data['About']) {
+            throw new \Exception('Parameter about does not set.');
+        };
+        if (null === $video = $data['Video']) {
+            throw new \Exception('Parameter video does not set.');
+        };
+        if (null === $year = $data['Year']) {
+            throw new \Exception('Parameter year does not set.');
+        };
+        if (null === $lang = $data['Lang']) {
+            throw new \Exception('Parameter lang does not set.');
+        };
+        if (null === $country = $data['Country']) {
+            throw new \Exception('Parameter country does not set.');
+        };
+        if (null === $budget = $data['Budget']) {
+            throw new \Exception('Parameter budget does not set.');
+        };
+        if (null === $time = $data['Time']) {
+            throw new \Exception('Parameter time does not set.');
+        };
+        if (null === $genre = $data['Genre']) {
+            throw new \Exception('Parameter genre does not set.');
+        };
+        if (null === $actors = $data['Actors']) {
+            throw new \Exception('Parameter actors does not set.');
+        };
 
-        ", [
-                $movie['Title'],
-                $movie['Category'],
-                $movie['About'],
-                $movie['Video'],
-                $movie['Year'],
-                $movie['Lang'],
-                $movie['Country'],
-                $movie['Budget'],
-                $movie['Time'],
-                $movie['Genre'],
-                $movie['Actors']
-            ]);
-        } catch (\Exception $e) {
-            return $e->getMessage();
+        if (null !== $this->movieRepository->findOneBy(['name' => $title])) {
+            throw new \Exception('Movie already exists.');
         }
+
+        $movie = new Movie(
+            $category,
+            $title,
+            $year,
+            $country,
+            $genre,
+            $budget,
+            $time,
+            $lang,
+            $actors,
+            $about,
+            $video
+        );
+
+        $this->em->persist($movie);
+        $this->em->flush();
 
         return 'success';
 
