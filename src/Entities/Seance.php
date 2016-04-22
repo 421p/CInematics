@@ -4,6 +4,7 @@ namespace Cinematics\Entities;
 
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
+use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,6 +39,15 @@ class Seance
 
     /** @Column(type="datetime") */
     private $date;
+
+
+    public function __construct(Movie $movie, Hall $hall, $price, Datetime $date)
+    {
+        $this->movie = $movie;
+        $this->hall = $hall;
+        $this->price = $price;
+        $this->date = $date;
+    }
 
     /**
      * @return mixed

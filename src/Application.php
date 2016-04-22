@@ -4,6 +4,7 @@ namespace Cinematics;
 
 use Cinematics\Controllers\AjaxController;
 use Cinematics\Controllers\RenderController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Application as SilexApplication;
@@ -19,7 +20,7 @@ class Application extends SilexApplication
     function __construct()
     {
         parent::__construct();
-        $this['debug'] = true;
+        $this['debug'] = false;
         $this->config = Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
         $this->model = new DatabaseProvider($this->config['doctrine']);
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'));
@@ -35,9 +36,13 @@ class Application extends SilexApplication
             $response->headers->set('Access-Control-Allow-Headers', 'accept, content-type');
         });
 
-//        $this->error(function (\Exception $e, $code){
-//            return new JsonResponse(['what' => $e->getMessage()]);
-//        });
+        if ($this['debug'] === false) {
+            $this->error(function (\Exception $e, $code) {
+                return new JsonResponse([
+                    'what' => $e->getMessage()
+                ]);
+            });
+        }
     }
 
     private function initRoutes()

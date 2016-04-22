@@ -31,14 +31,14 @@ class User
     /** @Column(type="string") */
     private $salt;
 
-    /** @Column(type="integer") */
+    /** @Column(type="integer", name="role_id") */
     private $role;
 
     public function __construct($name, $password, $role)
     {
         $this->name = $name;
 
-        $this->salt = random_bytes(12);
+        $this->salt = md5(random_bytes(22));
 
         $this->passwordHash = password_hash($password, PASSWORD_BCRYPT, [
             'salt' => $this->salt
@@ -46,7 +46,7 @@ class User
 
         $this->setRole($role);
 
-        $this->apiKey = random_bytes(18);
+        $this->apiKey = md5(random_bytes(12));
     }
 
     public function getId() : int

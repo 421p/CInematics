@@ -6,6 +6,7 @@ use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
 use Cinematics\Entities\Seance;
 use Cinematics\Entities\SeatType;
+use Cinematics\Entities\User;
 use Cinematics\Repositories\MovieRepository;
 use Cinematics\Repositories\SeanceRepository;
 use DateTime;
@@ -56,26 +57,26 @@ class DatabaseProvider
         return 'success';
     }
 
-
-    /**
-     * @param $seance array
-     * @return string result
-     */
-    function addSeance(array $seance) : string
+    function addSeance(array $data) : string
     {
 
-        try {
-            $this->doctrine->executeUpdate("
-            call addSeance(?,?,?,?);
-        ", [
-                $seance['Hall'], //string
-                $seance['Movie'], //string
-                $seance['Price'], //decimal
-                $seance['Date'] //string
-            ]);
-        } catch (\Exception $e) {
-            return $e->getMessage();
+        /** @var Hall $hall */
+        if (null === $hall = $this->em->find(Hall::class, $data['Hall'])) {
+            throw new \Exception('no such hall');
         }
+
+        /** @var Movie $movie */
+        if (null === $movie = $this->em->find(Movie::class, $data['Movie'])) {
+            throw new \Exception('no such movie');
+        }
+
+        $price = $data['Price'];
+        $date = new DateTime($data['Date']);
+
+        $seance = new Seance($movie, $hall, $price, $date);
+
+        $this->em->persist($seance);
+        $this->em->flush();
 
         return 'success';
 
@@ -190,8 +191,57 @@ class DatabaseProvider
             })->toArray();
     }
 
-    public function getEntityManager() {
+    public function getEntityManager()
+    {
         return $this->em;
+    }
+
+    public function assertApiKey(string $key, string $level)
+    {
+        /** @var User $user */
+        $user = current(
+            $this->em->createQueryBuilder()
+                ->select('u')
+                ->from(User::class, 'u')
+                ->where('u.apiKey = ?0')
+                ->setParameters([$key])
+                ->getQuery()
+                ->getResult()
+        );
+
+        if (!$user) {
+            throw new \Exception('no api key found');
+        }
+
+        if ($user->getRole() !== $level) {
+            throw new \Exception('cannot access');
+        }
+    }
+
+    public function restLogin(array $params)
+    {
+        /** @var User $user */
+        $user = current(
+            $this->em->createQueryBuilder()
+                ->select('u')
+                ->from(User::class, 'u')
+                ->where('u.name = ?0')
+                ->setParameters([$params['username']])
+                ->getQuery()
+                ->getResult()
+        );
+
+        if (!$user) {
+            throw new \Exception('wrong username or password.');
+        }
+
+        if ($user->getPasswordHash() === password_hash($params['password'], PASSWORD_BCRYPT,
+                ['salt' => $user->getSalt()])
+        ) {
+            return ['apiKey' => $user->getApiKey()];
+        } else {
+            throw new \InvalidArgumentException('wrong username or password.');
+        }
     }
 
 }
