@@ -28,9 +28,6 @@ class User
     /** @Column(type="string", name="password") */
     private $passwordHash;
 
-    /** @Column(type="string") */
-    private $salt;
-
     /** @Column(type="integer", name="role_id") */
     private $role;
 

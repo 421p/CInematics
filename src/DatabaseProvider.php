@@ -276,12 +276,10 @@ class DatabaseProvider
             throw new \Exception('wrong username or password.');
         }
 
-        if ($user->getPasswordHash() === password_hash($params['password'], PASSWORD_BCRYPT,
-                ['salt' => $user->getSalt()])
-        ) {
+        if (password_verify($params['password'], $user->getPasswordHash())) {
             return ['apiKey' => $user->getApiKey()];
         } else {
-            throw new \InvalidArgumentException('wrong username or password.');
+            throw new \Exception('wrong username or password.');
         }
     }
 
