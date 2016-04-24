@@ -279,7 +279,7 @@ class DatabaseProvider
         if (password_verify($params['password'], $user->getPasswordHash())) {
             return ['apiKey' => $user->getApiKey()];
         } else {
-            throw new \InvalidArgumentException('wrong username or password.');
+            throw new \Exception('wrong username or password.');
         }
     }
 
