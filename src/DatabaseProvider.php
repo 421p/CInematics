@@ -6,8 +6,6 @@ use Cinematics\Entities\Category;
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
 use Cinematics\Entities\Seance;
-use Cinematics\Entities\Seat;
-use Cinematics\Entities\SeatType;
 use Cinematics\Entities\Ticket;
 use Cinematics\Entities\User;
 use Cinematics\Repositories\MovieRepository;
@@ -16,6 +14,7 @@ use DateTime;
 use Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class DatabaseProvider
 {
@@ -42,11 +41,11 @@ class DatabaseProvider
     {
 
         if (null === $seance = $this->seanceRepository->findOneBy(['id' => $data['SeanceId']])) {
-            throw new \Exception('No such seance');
+            throw new HttpException(404, 'No such seance');
         }
 
         if (null === $seat = intval($data['SeatIndex'])) {
-            throw new \Exception('Empty seat, really?');
+            throw new HttpException(400, 'Empty seat, really?');
         }
 
         $ticketsInfo = $this->seanceRepository->getTicketsForSeance($seance)
@@ -55,7 +54,7 @@ class DatabaseProvider
             })->toList();
 
         if (in_array($seat, $ticketsInfo)) {
-            throw new \Exception('Seat is not free.');
+            throw new HttpException(403, 'Seat is not free.');
         }
 
         /** @var Seance $seance */
@@ -72,21 +71,21 @@ class DatabaseProvider
 
         /** @var Hall $hall */
         if (null === $hall = $this->em->find(Hall::class, $data['Hall'])) {
-            throw new \Exception('no such hall');
+            throw new HttpException(404, 'no such hall');
         }
 
         /** @var Movie $movie */
         if (null === $movie = $this->em->find(Movie::class, $data['Movie'])) {
-            throw new \Exception('no such movie');
+            throw new HttpException(404, 'no such movie');
         }
 
         if (null === $price = $data['Price']) {
-            throw new \Exception('Parameter price does not set.');
+            throw new HttpException(400, 'Parameter price does not set.');
         }
 
 
         if (null === $date = new DateTime($data['Date'])) {
-            throw new \Exception('no date set');
+            throw new HttpException(400, 'no date set');
         }
 
         $seance = new Seance($movie, $hall, $price, $date);
@@ -112,34 +111,34 @@ class DatabaseProvider
         );
 
         if (null === $title = $data['Title']) {
-            throw new \Exception('Parameter title does not set.');
+            throw new HttpException(400, 'Parameter title does not set.');
         };
         if (null === $about = $data['About']) {
-            throw new \Exception('Parameter about does not set.');
+            throw new HttpException(400, 'Parameter about does not set.');
         };
         if (null === $video = $data['Video']) {
-            throw new \Exception('Parameter video does not set.');
+            throw new HttpException(400, 'Parameter video does not set.');
         };
         if (null === $year = $data['Year']) {
-            throw new \Exception('Parameter year does not set.');
+            throw new HttpException(400, 'Parameter year does not set.');
         };
         if (null === $lang = $data['Lang']) {
-            throw new \Exception('Parameter lang does not set.');
+            throw new HttpException(400, 'Parameter lang does not set.');
         };
         if (null === $country = $data['Country']) {
-            throw new \Exception('Parameter country does not set.');
+            throw new HttpException(400, 'Parameter country does not set.');
         };
         if (null === $budget = $data['Budget']) {
-            throw new \Exception('Parameter budget does not set.');
+            throw new HttpException(400, 'Parameter budget does not set.');
         };
         if (null === $time = $data['Time']) {
-            throw new \Exception('Parameter time does not set.');
+            throw new HttpException(400, 'Parameter time does not set.');
         };
         if (null === $genre = $data['Genre']) {
-            throw new \Exception('Parameter genre does not set.');
+            throw new HttpException(400, 'Parameter genre does not set.');
         };
         if (null === $actors = $data['Actors']) {
-            throw new \Exception('Parameter actors does not set.');
+            throw new HttpException(400, 'Parameter actors does not set.');
         };
 
         if (null !== $this->movieRepository->findOneBy(['name' => $title])) {
@@ -251,11 +250,11 @@ class DatabaseProvider
         );
 
         if (!$user) {
-            throw new \Exception('no api key found');
+            throw new HttpException(403, 'no api key found');
         }
 
         if ($user->getRole() !== $level) {
-            throw new \Exception('cannot access');
+            throw new HttpException(401, 'cannot access');
         }
     }
 
@@ -273,15 +272,13 @@ class DatabaseProvider
         );
 
         if (!$user) {
-            throw new \Exception('wrong username or password.');
+            throw new HttpException(401, 'wrong username or password.');
         }
 
-        if ($user->getPasswordHash() === password_hash($params['password'], PASSWORD_BCRYPT,
-                ['salt' => $user->getSalt()])
-        ) {
+        if (password_verify($params['password'], $user->getPasswordHash())) {
             return ['apiKey' => $user->getApiKey()];
         } else {
-            throw new \InvalidArgumentException('wrong username or password.');
+            throw new HttpException(401, 'wrong username or password.');
         }
     }
 
