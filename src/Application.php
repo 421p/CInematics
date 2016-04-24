@@ -4,6 +4,7 @@ namespace Cinematics;
 
 use Cinematics\Controllers\AjaxController;
 use Cinematics\Controllers\RenderController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Application as SilexApplication;
@@ -21,7 +22,7 @@ class Application extends SilexApplication
         parent::__construct();
         $this['debug'] = true;
         $this->config = Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
-        $this->model = new DatabaseProvider($this->config['connectionString']);
+        $this->model = new DatabaseProvider($this->config['doctrine']);
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'));
         $this->init();
         $this->initRoutes();
@@ -34,6 +35,18 @@ class Application extends SilexApplication
             $response->headers->set('Access-Control-Allow-Methods', 'GET, POST');
             $response->headers->set('Access-Control-Allow-Headers', 'accept, content-type');
         });
+
+        $this->error(function (\Exception $e, Request $request, $code) {
+
+            if ($code === 404 && strstr($request->getPathInfo(), '/admin')) {
+                return $this->redirect('/admin');
+            }
+
+            return new JsonResponse([
+                'what' => $e->getMessage()
+            ]);
+        });
+
     }
 
     private function initRoutes()
