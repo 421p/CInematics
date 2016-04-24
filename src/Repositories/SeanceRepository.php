@@ -7,6 +7,7 @@ use Cinematics\Entities\Seat;
 use Cinematics\Entities\SeatType;
 use Cinematics\Entities\Ticket;
 use Doctrine\ORM\EntityRepository;
+use YaLinqo\Enumerable;
 
 class SeanceRepository extends EntityRepository
 {
@@ -34,16 +35,8 @@ class SeanceRepository extends EntityRepository
             ->setParameters([$seance->getId()])
             ->getQuery()->getResult();
 
-        $ticketsInfo = from(
-            $this->_em->createQueryBuilder()
-            ->select('t')
-            ->from(Ticket::class, 't')
-            ->innerJoin(Seance::class, 's')
-            ->where('s.id = ?0')
-            ->setParameters([$seance->getId()])
-            ->getQuery()->getArrayResult()
-        )->select(function($current){
-            return $current['id'];
+        $ticketsInfo = $this->getTicketsForSeance($seance)->select(function(Ticket $ticket){
+            return $ticket->getSeat();
         })->toList();
 
         return from($seats)->select(function (Seat $seat) use ($seance, $ticketsInfo) {
@@ -55,5 +48,17 @@ class SeanceRepository extends EntityRepository
                 'isFree' => !in_array($seat->getSeat(), $ticketsInfo)
             ];
         })->toList();
+    }
+
+    public function getTicketsForSeance(Seance $seance) : Enumerable{
+        return from(
+            $this->_em->createQueryBuilder()
+                ->select('t')
+                ->from(Ticket::class, 't')
+                ->innerJoin(Seance::class, 's')
+                ->where('s.id = ?0')
+                ->setParameters([$seance->getId()])
+                ->getQuery()->getResult()
+        );
     }
 }

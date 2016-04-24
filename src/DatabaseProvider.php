@@ -47,18 +47,17 @@ class DatabaseProvider
             throw new \Exception('No such seance');
         }
 
+        if (null === $seat = intval($data['SeatIndex'])) {
+            throw new \Exception('Empty seat, really?');
+        }
 
-        if (!$seat = current(
-                $this->em->createQueryBuilder()
-                    ->select('seat')
-                    ->from(Seat::class, 'seat')
-                    ->where('seat.hall = ?0')
-                    ->andWhere('seat.index = ?1')
-                    ->setParameters([$seance->getHall(), $data['SeatIndex']])
-                    ->getQuery()->getResult()
-            )
-        ) {
-            throw new \Exception('Cannot find seat.');
+        $ticketsInfo = $this->seanceRepository->getTicketsForSeance($seance)
+            ->select(function (Ticket $ticket) {
+                return $ticket->getSeat();
+            })->toList();
+
+        if (in_array($seat, $ticketsInfo)) {
+            throw new \Exception('Seat is not free.');
         }
 
         /** @var Seance $seance */

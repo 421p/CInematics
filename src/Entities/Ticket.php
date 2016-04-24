@@ -2,6 +2,7 @@
 
 namespace Cinematics\Entities;
 
+use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
@@ -26,12 +27,12 @@ class Ticket
      */
     private $seance;
 
-    /** @OneToOne(targetEntity="Seat")
-     * @JoinColumn(name="seat", referencedColumnName="id")
+    /**
+     * @Column(type="integer")
      */
     private $seat;
 
-    public function __construct(Seance $seance, Seat $seat)
+    public function __construct(Seance $seance, int $seat)
     {
         $this->seance = $seance;
         $this->seat = $seat;
@@ -45,7 +46,7 @@ class Ticket
     /**
      * @return mixed
      */
-    public function getSeat() : Seat
+    public function getSeat()
     {
         return $this->seat;
     }
