@@ -6,7 +6,9 @@ use Cinematics\Entities\Category;
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
 use Cinematics\Entities\Seance;
+use Cinematics\Entities\Seat;
 use Cinematics\Entities\SeatType;
+use Cinematics\Entities\Ticket;
 use Cinematics\Entities\User;
 use Cinematics\Repositories\MovieRepository;
 use Cinematics\Repositories\SeanceRepository;
@@ -38,22 +40,32 @@ class DatabaseProvider
     }
 
 
-    /**
-     * @param array $ticket
-     * @return string
-     */
-    function sellTicket(array $ticket) : string
+    function sellTicket(array $data) : string
     {
-        try {
-            $this->doctrine->executeUpdate("
-                call sellTicket(?,?);
-            ", [
-                $ticket['SeanceId'], //int
-                $ticket['SeatIndex'] // int
-            ]);
-        } catch (\Throwable $e) {
-            return $e->getMessage();
+
+        if (null === $seance = $this->seanceRepository->findOneBy(['id' => $data['SeanceId']])) {
+            throw new \Exception('No such seance');
         }
+
+
+        if (!$seat = current(
+                $this->em->createQueryBuilder()
+                    ->select('seat')
+                    ->from(Seat::class, 'seat')
+                    ->where('seat.hall = ?0')
+                    ->andWhere('seat.index = ?1')
+                    ->setParameters([$seance->getHall(), $data['SeatIndex']])
+                    ->getQuery()->getResult()
+            )
+        ) {
+            throw new \Exception('Cannot find seat.');
+        }
+
+        /** @var Seance $seance */
+        $ticket = new Ticket($seance, $seat);
+
+        $this->em->persist($ticket);
+        $this->em->flush();
 
         return 'success';
     }
@@ -70,7 +82,7 @@ class DatabaseProvider
         if (null === $movie = $this->em->find(Movie::class, $data['Movie'])) {
             throw new \Exception('no such movie');
         }
-        
+
         if (null === $price = $data['Price']) {
             throw new \Exception('Parameter price does not set.');
         }

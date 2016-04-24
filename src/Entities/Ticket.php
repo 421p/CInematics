@@ -27,13 +27,16 @@ class Ticket
     private $seance;
 
     /** @OneToOne(targetEntity="Seat")
-     * @JoinColumn(name="seat", referencedColumnName="index")
+     * @JoinColumn(name="seat", referencedColumnName="id")
      */
     private $seat;
 
-    /**
-     * @return mixed
-     */
+    public function __construct(Seance $seance, Seat $seat)
+    {
+        $this->seance = $seance;
+        $this->seat = $seat;
+    }
+
     public function getId()
     {
         return $this->id;

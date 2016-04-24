@@ -20,7 +20,7 @@ class Application extends SilexApplication
     function __construct()
     {
         parent::__construct();
-        $this['debug'] = false;
+        $this['debug'] = true;
         $this->config = Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
         $this->model = new DatabaseProvider($this->config['doctrine']);
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../www/views'));
@@ -36,13 +36,17 @@ class Application extends SilexApplication
             $response->headers->set('Access-Control-Allow-Headers', 'accept, content-type');
         });
 
-        if ($this['debug'] === false) {
-            $this->error(function (\Exception $e, $code) {
-                return new JsonResponse([
-                    'what' => $e->getMessage()
-                ]);
-            });
-        }
+        $this->error(function (\Exception $e, Request $request, $code) {
+
+            if ($code === 404 && strstr($request->getPathInfo(), '/admin')) {
+                return $this->redirect('/admin');
+            }
+            
+            return new JsonResponse([
+                'what' => $e->getMessage()
+            ]);
+        });
+
     }
 
     private function initRoutes()
