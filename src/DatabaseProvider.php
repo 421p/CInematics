@@ -6,7 +6,9 @@ use Cinematics\Entities\Category;
 use Cinematics\Entities\Hall;
 use Cinematics\Entities\Movie;
 use Cinematics\Entities\Seance;
+use Cinematics\Entities\Seat;
 use Cinematics\Entities\SeatType;
+use Cinematics\Entities\Ticket;
 use Cinematics\Entities\User;
 use Cinematics\Repositories\MovieRepository;
 use Cinematics\Repositories\SeanceRepository;
@@ -18,7 +20,6 @@ use Doctrine\ORM\Tools\Setup;
 class DatabaseProvider
 {
 
-    private $doctrine;
     private $em;
 
     /**
@@ -37,23 +38,31 @@ class DatabaseProvider
         $this->seanceRepository = $this->em->getRepository(Seance::class);
     }
 
-
-    /**
-     * @param array $ticket
-     * @return string
-     */
-    function sellTicket(array $ticket) : string
+    function sellTicket(array $data) : string
     {
-        try {
-            $this->doctrine->executeUpdate("
-                call sellTicket(?,?);
-            ", [
-                $ticket['SeanceId'], //int
-                $ticket['SeatIndex'] // int
-            ]);
-        } catch (\Throwable $e) {
-            return $e->getMessage();
+
+        if (null === $seance = $this->seanceRepository->findOneBy(['id' => $data['SeanceId']])) {
+            throw new \Exception('No such seance');
         }
+
+        if (null === $seat = intval($data['SeatIndex'])) {
+            throw new \Exception('Empty seat, really?');
+        }
+
+        $ticketsInfo = $this->seanceRepository->getTicketsForSeance($seance)
+            ->select(function (Ticket $ticket) {
+                return $ticket->getSeat();
+            })->toList();
+
+        if (in_array($seat, $ticketsInfo)) {
+            throw new \Exception('Seat is not free.');
+        }
+
+        /** @var Seance $seance */
+        $ticket = new Ticket($seance, $seat);
+
+        $this->em->persist($ticket);
+        $this->em->flush();
 
         return 'success';
     }
@@ -70,7 +79,7 @@ class DatabaseProvider
         if (null === $movie = $this->em->find(Movie::class, $data['Movie'])) {
             throw new \Exception('no such movie');
         }
-        
+
         if (null === $price = $data['Price']) {
             throw new \Exception('Parameter price does not set.');
         }
@@ -159,10 +168,6 @@ class DatabaseProvider
     }
 
 
-    /**
-     * @param null $id
-     * @return mixed
-     */
     function getHallsInfo($id = null)
     {
         return $id != null ?
@@ -175,18 +180,11 @@ class DatabaseProvider
                 ->getResult();
     }
 
-    /**
-     * @return array
-     */
     function getMovies() : array
     {
         return $this->em->getRepository(Movie::class)->getAll();
     }
 
-    /**
-     * @param $id string
-     * @return array
-     */
     function getSeanceInfo($id) : array
     {
         /** @var Seance $seance */
