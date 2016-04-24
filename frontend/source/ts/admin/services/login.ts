@@ -1,7 +1,6 @@
-/**
- * Created by mrart on 20.04.2016.
- */
-
 export class AdminLoginService{
-
+    Body = $("body");
+    constructor(){
+        this.Body.attr("id", "login");
+    }
 }
