@@ -41,7 +41,7 @@ class Application extends SilexApplication
             if ($code === 404 && strstr($request->getPathInfo(), '/admin')) {
                 return $this->redirect('/admin');
             }
-            
+
             return new JsonResponse([
                 'what' => $e->getMessage()
             ]);

@@ -20,7 +20,6 @@ use Doctrine\ORM\Tools\Setup;
 class DatabaseProvider
 {
 
-    private $doctrine;
     private $em;
 
     /**
@@ -38,7 +37,6 @@ class DatabaseProvider
         $this->movieRepository = $this->em->getRepository(Movie::class);
         $this->seanceRepository = $this->em->getRepository(Seance::class);
     }
-
 
     function sellTicket(array $data) : string
     {
@@ -170,10 +168,6 @@ class DatabaseProvider
     }
 
 
-    /**
-     * @param null $id
-     * @return mixed
-     */
     function getHallsInfo($id = null)
     {
         return $id != null ?
@@ -186,18 +180,11 @@ class DatabaseProvider
                 ->getResult();
     }
 
-    /**
-     * @return array
-     */
     function getMovies() : array
     {
         return $this->em->getRepository(Movie::class)->getAll();
     }
 
-    /**
-     * @param $id string
-     * @return array
-     */
     function getSeanceInfo($id) : array
     {
         /** @var Seance $seance */
