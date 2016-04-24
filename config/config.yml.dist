@@ -1,1 +1,7 @@
 'connectionString' : 'CONNECTION_STRIN_HERE'
+'doctrine' :
+  'driver' : 'driver'
+  'user' : 'user'
+  'password' : 'password'
+  'dbname' : 'dbname'
+  'host' : 'host'
