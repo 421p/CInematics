@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Application as SilexApplication;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends SilexApplication
@@ -44,7 +45,7 @@ class Application extends SilexApplication
 
             return new JsonResponse([
                 'what' => $e->getMessage()
-            ]);
+            ], $e instanceof HttpException ? $e->getStatusCode() : 200);
         });
 
     }

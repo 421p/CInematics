@@ -8,6 +8,7 @@ use DateTime;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AjaxController
 {
@@ -33,7 +34,7 @@ class AjaxController
     {
         $this->router->get('/', function () {
             return json_encode([
-                'Api Version' => '0.0.3',
+                'Api Version' => '0.0.4',
                 'Author' => 'Mykola Prokopenko'
             ]);
         });
@@ -92,7 +93,7 @@ class AjaxController
                 $dateFrom = new DateTime($from);
                 $dateTo = new DateTime($to);
             } catch (\Exception $e) {
-                throw new \Exception("Can't parse string to date");
+                throw new HttpException(403, "Can't parse string to date");
             }
 
             return new JsonResponse($this->model->getSeancesBetweenDates($dateFrom, $dateTo));
