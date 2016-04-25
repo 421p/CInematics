@@ -124,7 +124,7 @@ class DetailedInfo{
                     width+= $(this).outerWidth();
                 });
                 this.Slider.css({
-                    width: width,
+                    width: width+50,
                     transform: `translate3d(${($(window).outerWidth() - width - this.Slider.find(".itemslide-active").outerWidth())/2 - 10}px, 0px, 0px)`
                 });
 
@@ -209,6 +209,7 @@ class DetailedInfo{
             this.Slider.html("<li>В данный период нет показов</li>");
             if(!$.isEmptyObject(this.Slider.data()))
                 this.Slider.reload();
+
             return;
         }
 
@@ -220,7 +221,7 @@ class DetailedInfo{
         if(!$.isEmptyObject(this.Slider.data()))
             this.Slider.reload();
 
-        this.Slider.gotoSlide(Math.round(List.length/2));
+        this.Slider.gotoSlide(Math.floor(this.Slider.children().length/2));
 
         this.xOld = JSON.parse(JSON.stringify(this.xNew));
     }
