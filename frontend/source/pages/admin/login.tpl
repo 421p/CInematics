@@ -4,8 +4,8 @@
 <h2 class="form-heading">Вход</h2>
 <div class="app-cam">
     <form>
-        <input type="text" class="text" placeholder="E-mail адресс">
-        <input type="password" placeholder="Пароль">
+        <input type="text" class="text" placeholder="E-mail адресс" [(ngModel)]="username">
+        <input type="password" placeholder="Пароль" [(ngModel)]="password">
         <div class="submit"><input type="submit" (click)="Login()" value="Login">
             <a [routerLink]="['Main']">MAIN</a>
         </div>

@@ -1,7 +1,8 @@
-import {Component} from 'angular2/core';
+import {Component } from 'angular2/core';
 import {AdminLoginService} from '../services/login';
 import {Router,ROUTER_DIRECTIVES} from "angular2/router";
-
+import {URLSearchParams} from 'angular2/http';
+import 'rxjs/Rx';
 @Component({
     selector: 'adminLogin',
     templateUrl: 'pages/admin/login.tpl',
@@ -9,11 +10,21 @@ import {Router,ROUTER_DIRECTIVES} from "angular2/router";
 })
 
 
+
 export class AdminLoginComponent{
-    constructor(private admidLoginService: AdminLoginService, private router: Router){
+    username:string;
+    password:string;
+    constructor(public admidLoginService: AdminLoginService, private router: Router){
     }
     Login(){
-        this.router.navigate(['Main']);
-        return false;
+        let Form = new URLSearchParams();
+        Form.set("username", this.username);
+        Form.set("password", this.password);
+        
+        this.admidLoginService.SignIn(Form).subscribe((response:ApiKey) => {
+            this.admidLoginService.SetSessionKey(response.apiKey);
+            this.router.navigate(["Main"]);
+            return false;
+        });
     }
 }
