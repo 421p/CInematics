@@ -3,7 +3,9 @@
 namespace Cinematics\Controllers;
 
 
+use Cinematics\Application;
 use Silex\ControllerCollection;
+use Symfony\Component\HttpFoundation\Request;
 
 class RenderController
 {
@@ -27,13 +29,28 @@ class RenderController
 
     private function initRoutes()
     {
-        $this->router->get('/', function () {
-            return $this->twig->render('main.html.twig');
-        });
+        $this->router->get(
+            '/',
+            function () {
+                return $this->twig->render('main.html.twig');
+            }
+        );
 
-        $this->router->get('/admin', function () {
-            return $this->twig->render('admin.html.twig');
-        });
+        $this->router->get(
+            '/admin',
+            function () {
+                return $this->twig->render('admin.html.twig');
+            }
+        );
+
+        $this->router->get(
+            '/test',
+            function (Request $request, Application $app) {
+
+                return '<a href="'.$app->getFbProvider()->getAuthorizationUrl().'">login</a>';
+
+            }
+        );
     }
 
 }
